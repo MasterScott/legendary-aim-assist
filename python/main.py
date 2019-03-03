@@ -1,8 +1,13 @@
 import cv2
 import numpy as np
+import time
+import threading
 
 from ReferenceManager import Scope
+from BackgroundManager import BackgroundManager
+import ScreenshotManager
 import ReferenceManager
+import InputManager
 
 # read in the image:
 img = cv2.imread('../examples/beast-mode/x2/0.png')
@@ -24,7 +29,7 @@ img = cv2.dilate(img, np.ones((2, 2), np.uint8), iterations=5)
 
 # identify objects:
 img[img != 0] = 255
-cv2.floodFill(img, None, (0, 0), 255)
+# cv2.floodFill(img, None, (0, 0), 255)
 # _, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY)
 # img = cv2.bitwise_not(img)
 # h, w = img.shape[:2]
@@ -33,6 +38,15 @@ cv2.floodFill(img, None, (0, 0), 255)
 
 
 # show the result:
-cv2.imshow('test', img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow('test', img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+# start the screenshotting thread:
+screenshotThread = BackgroundManager(float(1./60), ScreenshotManager.screenshot, [Scope.x2])
+screenshotThread.start()
+
+# start the hook thread::
+threading.Thread(target=InputManager.listen).start()
+
+print("Running...")
