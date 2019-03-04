@@ -30,7 +30,7 @@ def get_aoi(type):
 
 def get_hsv(type):
     if type == Scope.x2:
-        return HsvBounds(np.array([0, 150, 0]), np.array([50, 230, 160]))
+        return HsvBounds(np.array([1, 100, 70]), np.array([10, 170, 170]))
     else:
         raise Exception("Unknown scope!")
 
