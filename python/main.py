@@ -3,6 +3,7 @@ import numpy as np
 import time
 import threading
 import math
+import sys
 
 from ReferenceManager import Scope
 from BackgroundManager import BackgroundManager
@@ -142,7 +143,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 # start the screenshotting thread:
-# screenshotThread = BackgroundManager(float(1./60), ScreenshotManager.screenshot, [Scope.x2])
+# screenshotThread = BackgroundManager(float(1./1000), ScreenshotManager.screenshot, [Scope.x2])
 # screenshotThread.start()
 
 # start the hook thread::
