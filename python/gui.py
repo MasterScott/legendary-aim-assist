@@ -54,7 +54,7 @@ cv2.createTrackbar(vh, wnd,0,255,set_vah)
 
 # begin our 'infinite' while loop
 while (1):
-    frame = cv2.imread('out/1551644036303.png')
+    frame = cv2.imread('out/1551644025498.png')
 
     # it is common to apply a blur to the frame
     # frame = cv2.GaussianBlur(frame, (5, 5), 0)
