@@ -2,23 +2,38 @@ from actor import StateManager
 from actor import ReferenceManager
 import pynput
 import time
+import numpy as np
+
 
 # Smooths out a relative move (x, y) into multiple moves that still end in x, y
-def _smooth_moves(x, y, segments=2):
-    return [(x, y)]
+def _smooth_moves(x, y, segments=3):
+    x_moves = []
+    for i in range(segments - 1):
+        x_moves.append(np.random.uniform(1., (x - np.sum(x_moves))))
+    x_moves.append(x - np.sum(x_moves))
+
+    y_moves = []
+    for i in range(segments - 1):
+        y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))))
+        y_moves.append(y - np.sum(y_moves))
+    return zip(x_moves, y_moves)
+
 
 # TODO figure out how to normalize this based on mouse sensitivity (this is windows only)
 def click(x, y):
 
-    # adjust for AOI (todo is this absolute move?)
-    # x += ReferenceManager.get_aoi(StateManager.Scope).x
-    # y += ReferenceManager.get_aoi(StateManager.Scope).y
+    # adjust for aim point
+    x -= ReferenceManager.get_aim(ReferenceManager.Scope.x2)[0]
+    y -= ReferenceManager.get_aim(ReferenceManager.Scope.x2)[1]
 
+    print(x, y)
 
+    # Move the mouse:
     mouse = pynput.mouse.Controller()
-    print("Moving ", x, y)
-    print(mouse.position)
-    mouse.position = (x, y)  # TODO use smooth moves
+    for move in _smooth_moves(x, y, 3):
+        print(move)
+        mouse.move(move[0], move[1])  # TODO use smooth moves
+        time.sleep(np.random.uniform(.001, .005))
 
     # Press the shoot button:
     keyboard = pynput.keyboard.Controller()

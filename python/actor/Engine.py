@@ -112,10 +112,10 @@ def get_target(screenshot):
             tgt[aim_y + i[0], aim_x + i[1]] = [255, 0, 0]
 
         # show the result:
-        # cv2.imshow('filter', binary)
-        # cv2.imshow('target', tgt)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+        cv2.imshow('filter', binary)
+        cv2.imshow('target', tgt)
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
 
         return Target(1., aim_x, aim_y)
 
