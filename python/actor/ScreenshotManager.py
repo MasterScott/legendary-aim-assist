@@ -7,9 +7,9 @@ from adt.Screenshot import Screenshot
 
 # Returns a screenshot and optionally saves it
 # Typically takes <10 ms, or <30ms if saving.
-def get_screenshot(scope, save=True):
+def get_screenshot(save=False):
     if StateManager.aiming and StateManager.beast_mode:
-        image = _gsk_screenshot(ReferenceManager.get_aoi(scope))
+        image = _gsk_screenshot(ReferenceManager.get_aoi(StateManager.scope))
         timestamp = int(round(time.time() * 1000))
         screenshot = Screenshot(image, timestamp)
         if save:
