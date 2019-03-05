@@ -78,7 +78,7 @@ def get_target(screenshot):
             if aim_x >= mask.shape[1] or aim_x < 0:
                 aim_x = head_x
                 step_size = 1
-                aim_y += 4  # TODO be a little smarter about this
+                aim_y += 2
             if aim_y >= mask.shape[0]:
                 raise Exception("Image Corruption")
             if mask[aim_y][aim_x] != 0:
@@ -97,12 +97,10 @@ def get_target(screenshot):
             head_right += 1
         aim_x = int(round(((head_left + head_right) / 2)))
 
-        # TODO aim:
         print(aim_x, aim_y)
 
         c = cv2.Canny(raw, 100, 200)
         cv2.imshow('edges', c)
-        # return # TODO remove debug
 
         # DEBUG:
         tgt = raw

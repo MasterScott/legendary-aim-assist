@@ -42,12 +42,6 @@ examples = {
         'out/1551644037278.png': (136, 37),
     }
 
-# TODO implement confidence
-# TODO differential analysis (may require better detection)
-# TODO evaluate edge detection
-# TODO overlay
-# TODO hooks to change scope
-# TODO make more masks
 def main():
 
     # start the screenshotting thread:
@@ -56,7 +50,6 @@ def main():
 
     # start the hook thread::
     # threading.Thread(target=InputManager.listen).start()
-    # TODO the hook thread should trigger get_target on click, then trigger a Robot action
 
     # Invoke this for debug purposes
     target = Engine.get_target(Screenshot(get_image(), time.time()))
