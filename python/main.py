@@ -16,7 +16,7 @@ def _distance(a, b):
 
 # Method used to debug by pulling in an example image:
 def get_image():
-    return cv2.imread('out/1551643714397.png')  # clean sample
+    # return cv2.imread('out/1551643714397.png')  # clean sample
     # return cv2.imread('out/1551643715076.png')  # occluded sample
     # return cv2.imread('out/1551643723461.png')  # very close
     # return cv2.imread('out/1551644022774.png')  # moderately far
@@ -26,7 +26,7 @@ def get_image():
     # return cv2.imread('out/1551644037278.png')  # hit marker
     # return cv2.imread('out/1551643714966.png')  # also occluded
     # return cv2.imread('out/1551643723862.png')  # smoky
-    # return cv2.imread('out/1551644032232.png')  # trail
+    return cv2.imread('out/1551644032232.png')  # trail
     # return cv2.imread('out/1551644032600.png')  # trail
     # return cv2.imread('out/1551644033718.png')  # flash
 
@@ -42,7 +42,18 @@ examples = {
         'out/1551644037278.png': (136, 37),
     }
 
+def _test_methods():
+    error = 0.
+    for file, answer in examples.items():
+        target = Engine.get_target(Screenshot(get_image(), time.time()))
+        error += _distance(answer, (target.x, target.y))
+    return error / len(examples)
+
+
 def main():
+
+    print(_test_methods())
+    return
 
     # start the screenshotting thread:
     screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.get_screenshot, [Scope.x2])

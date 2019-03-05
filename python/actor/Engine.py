@@ -1,11 +1,7 @@
 import cv2
 import numpy as np
-import time
-import math
 
 from actor.ReferenceManager import Scope
-from actor.BackgroundManager import BackgroundManager
-from adt.Screenshot import Screenshot
 from adt.Target import Target
 from actor import ReferenceManager, ScreenshotManager, Robot
 

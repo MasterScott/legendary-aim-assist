@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 import time
 
+from actor import ReferenceManager
+
 # 'optional' argument is required for trackbar creation parameters
 
 hul = 0
@@ -54,24 +56,28 @@ cv2.createTrackbar(vh, wnd,0,255,set_vah)
 
 # begin our 'infinite' while loop
 while (1):
-    frame = cv2.imread('out/1551644025498.png')
+    frame = cv2.imread('out/1551644032232.png')
 
     # it is common to apply a blur to the frame
     # frame = cv2.GaussianBlur(frame, (5, 5), 0)
 
     # convert from a BGR stream to an HSV stream
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
-    # make array for final values
-    HSVLOW = np.array([hul, sal, val])
-    HSVHIGH = np.array([huh, sah, vah])
+    hsv = cv2.bitwise_and(hsv, hsv, mask=ReferenceManager.get_mask(ReferenceManager.Scope.x2))
 
     # create a mask for that range
-    mask = cv2.inRange(hsv, HSVLOW, HSVHIGH)
+    mask = cv2.inRange(hsv, np.array([hul, sal, val]), np.array([huh, sah, vah]))
 
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.imshow(wnd, res)
+    c = cv2.Canny(res, 100, 200)
+    small_mask = cv2.erode(mask, np.ones((2, 2), np.uint8), iterations=2)
+    small_c = cv2.bitwise_and(c, c, mask=small_mask)
+    small_c = cv2.dilate(small_c, np.ones((3, 3), np.uint8), iterations=3)
+
+    cv2.imshow('mask', mask)
+    cv2.imshow('small_mask', small_mask)
+    cv2.imshow('final', small_c)
 
     k = cv2.waitKey(5)
     if k == ord('q'):
