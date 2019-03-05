@@ -1,0 +1,5 @@
+class Target:
+    def __init__(self, confidence, x=-1, y=-1):
+        self.x = x
+        self.y = y
+        self.confidence = confidence

@@ -1,7 +1,7 @@
 import pynput
 import time
 
-import StateManager
+from actor import StateManager
 
 beast_time = -1
 
