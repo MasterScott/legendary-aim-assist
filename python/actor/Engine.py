@@ -97,7 +97,7 @@ def get_target(screenshot):
             head_right += 1
         aim_x = int(round(((head_left + head_right) / 2)))
 
-        print(aim_x, aim_y)
+        # TODO remove the following debug code for prod:
 
         c = cv2.Canny(raw, 100, 200)
         cv2.imshow('edges', c)
@@ -112,10 +112,10 @@ def get_target(screenshot):
             tgt[aim_y + i[0], aim_x + i[1]] = [255, 0, 0]
 
         # show the result:
-        cv2.imshow('filter', binary)
-        cv2.imshow('target', tgt)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.imshow('filter', binary)
+        # cv2.imshow('target', tgt)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
         return Target(1., aim_x, aim_y)
 

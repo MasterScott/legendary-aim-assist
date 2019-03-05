@@ -5,7 +5,7 @@ import time
 import numpy as np
 
 
-# Smooths out a relative move (x, y) into multiple moves that still end in x, y
+# Smooths out a relative move (x, y) into multiple moves that still sum to x, y
 def _smooth_moves(x, y, segments=3):
     x_moves = []
     for i in range(segments - 1):
@@ -23,16 +23,13 @@ def _smooth_moves(x, y, segments=3):
 def click(x, y):
 
     # adjust for aim point
-    x -= ReferenceManager.get_aim(ReferenceManager.Scope.x2)[0]
-    y -= ReferenceManager.get_aim(ReferenceManager.Scope.x2)[1]
-
-    print(x, y)
+    x -= ReferenceManager.get_aim(StateManager.scope)[0]
+    y -= ReferenceManager.get_aim(StateManager.scope)[1]
 
     # Move the mouse:
     mouse = pynput.mouse.Controller()
     for move in _smooth_moves(x, y, 3):
-        print(move)
-        mouse.move(move[0], move[1])  # TODO use smooth moves
+        mouse.move(move[0], move[1])
         time.sleep(np.random.uniform(.001, .005))
 
     # Press the shoot button:

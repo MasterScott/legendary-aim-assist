@@ -54,9 +54,8 @@ def main():
     # Invoke this for debug purposes
     target = Engine.get_target(Screenshot(get_image(), time.time()))
 
-    print("pre move")
+    # Normally, this would be invoked by the Engine itself
     Robot.click(target.x, target.y)
-    print("post move")
 
     print("Running...")
 
