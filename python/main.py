@@ -16,11 +16,21 @@ def _distance(a, b):
     return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
 # Method used to debug by pulling in an example image:
+fails = [
+'1551644032715.png', # actually a hit, muzzle flash
+'1551644023828.png', # muzzle flash
+'1551644024172.png', # hit, but too low
+'1551644035595.png', # gun hit
+'1551644024062.png', # hit, but too low
+'1551644022402.png', # perfect hit
+'1551643714966.png', # gun hit
+
+]
 def get_image():
     # return cv2.imread('out/1551643714397.png')  # clean sample
     # return cv2.imread('out/1551643715076.png')  # occluded
     # return cv2.imread('out/1551643723461.png')  # very close
-    return cv2.imread('out/1551644022774.png')  # moderately far
+    # return cv2.imread('out/1551644022774.png')  # moderately far
     # return cv2.imread('out/1551644025498.png')  # noisy
     # return cv2.imread('out/1551644032348.png')  # noisy
     # return cv2.imread('out/1551644036303.png')  # noisy
@@ -35,6 +45,7 @@ def get_image():
     # return cv2.imread('out/1551643716105.png')  # mirage # fails, but understandably
     # return cv2.imread('out/1551643723862.png') # close, flash
     # return cv2.imread('out/1551643724589.png')  # heavy occlusion
+    return fails[0]
 
 def _test_methods_cost(x):
     StateManager.debug_hsv = HsvBounds(np.array([x[0], x[1], x[2]]), np.array([x[3], x[4], x[5]]))
@@ -60,15 +71,24 @@ def _test_methods():
             if min(start_y, end_y) <= target.y <= max(start_y, end_y):  # within Y bounds
                 error = 0
         else:
-            cv2.imshow('fail', cv2.imread('data/samples/x2/' + filename))
-            cv2.waitKey(0)
+            image = cv2.imread('data/samples/x2/' + filename)
+            for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
+                image[target.y + i[0], target.y + i[1]] = [0, 255, 0]
+            # print(filename)
+            # cv2.imshow(filename, image)
+            # cv2.waitKey(0)
             cv2.destroyAllWindows()
+            pass
         total_error += error
     return total_error / len(labels)
 
 
 def main():
-    print(_test_methods())  # currently 920
+
+    # _test_methods()
+    # Engine.get_target(Screenshot(cv2.imread('data/samples/x2/' + get_image()), time.time()))
+
+    print(_test_methods())  # currently ~22%
     return
 
     # start the screenshotting thread:

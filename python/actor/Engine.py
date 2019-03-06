@@ -45,12 +45,12 @@ def get_target(screenshot):
     binary = cv2.dilate(small_c, np.ones((9, 9), np.uint8), iterations=1)
 
     # Fill holes:
-    im_floodfill = binary.copy()
-    h, w = im_floodfill.shape[:2]
-    flood_mask = np.zeros((h + 2, w + 2), np.uint8)
-    cv2.floodFill(im_floodfill, flood_mask, (0, 0), 255);
-    im_floodfill_inv = cv2.bitwise_not(im_floodfill)
-    binary = binary | im_floodfill_inv
+    # im_floodfill = binary.copy()
+    # h, w = im_floodfill.shape[:2]
+    # flood_mask = np.zeros((h + 2, w + 2), np.uint8)
+    # cv2.floodFill(im_floodfill, flood_mask, (0, 0), 255);
+    # im_floodfill_inv = cv2.bitwise_not(im_floodfill)
+    # binary = binary | im_floodfill_inv
 
     # Identify components:
     components = cv2.connectedComponentsWithStats(binary, 4, cv2.CV_32S)
