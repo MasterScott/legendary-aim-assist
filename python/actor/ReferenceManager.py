@@ -32,8 +32,8 @@ def get_aoi(scope):
 
 def get_hsv(scope):
     if scope == Scope.x2:
-        # return HsvBounds(np.array([1, 50, 60]), np.array([10, 175, 190]))  # Experimental for Canny
-        return HsvBounds(np.array([1, 100, 70]), np.array([10, 170, 170])) # Stable for HSV only
+        return HsvBounds(np.array([1, 50, 60]), np.array([10, 175, 190]))  # Experimental for Canny
+        # return HsvBounds(np.array([1, 100, 70]), np.array([10, 170, 170])) # Stable for HSV only
     else:
         raise Exception("Unknown scope!")
 

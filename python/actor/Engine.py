@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import time
 
 from actor.ReferenceManager import Scope
 from adt.Target import Target
@@ -35,6 +36,11 @@ def get_target(screenshot):
 
     # Convert to binary:
     binary = _convert_binary(hsv)
+
+    c = cv2.Canny(hsv, 100, 200)
+    small_mask = cv2.erode(mask, np.ones((2, 2), np.uint8), iterations=2)
+    small_c = cv2.bitwise_and(c, c, mask=small_mask)
+    binary = cv2.dilate(small_c, np.ones((7, 7), np.uint8), iterations=1)
 
     # Identify components:
     components = cv2.connectedComponentsWithStats(binary, 4, cv2.CV_32S)
@@ -93,11 +99,6 @@ def get_target(screenshot):
             head_right += 1
         aim_x = int(round(((head_left + head_right) / 2)))
 
-        # TODO remove the following debug code for prod:
-
-        c = cv2.Canny(raw, 100, 200)
-        cv2.imshow('edges', c)
-
         # DEBUG:
         tgt = raw
         for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
@@ -109,6 +110,7 @@ def get_target(screenshot):
 
         # show the result:
         # cv2.imshow('filter', binary)
+        # cv2.imshow('lines', c)
         # cv2.imshow('target', tgt)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
