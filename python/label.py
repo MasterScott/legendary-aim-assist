@@ -15,7 +15,8 @@ def click_and_crop(event, x, y, flags, param):
         cv2.imshow("image", image)
 
 def main():
-
+    global refPt, cropping
+    refPt = []
     image_path = 'data/samples/x2/'
     label_path = 'data/labels/x2/labels.txt'
 

@@ -35,27 +35,25 @@ def get_image():
     # return cv2.imread('out/1551643723862.png') # close, flash
     # return cv2.imread('out/1551643724589.png')  # heavy occlusion
 
-# dictionary used to debug by backtesting a number of images:
-examples = {
-        'out/1551643714397.png': (180, 30),
-        'out/1551643715076.png': (110, 60),
-        'out/1551643723461.png': (140, 10),
-        'out/1551644022774.png': (200, 10),
-        'out/1551644025498.png': (82, 42),
-        'out/1551644032348.png': (189, 37),
-        'out/1551644036303.png': (183, 47),
-        'out/1551644037278.png': (136, 37),
-        'out/1551643714726.png': (210, 34),
-        'out/1551643723862.png': (83, 23)
-    }
-
 def _test_methods():
 
-    error = 0.
-    for file, answer in examples.items():
-        target = Engine.get_target(Screenshot(get_image(), time.time()))
-        error += (_distance(answer, (target.x, target.y)) ** 2)
-    return math.sqrt(error / len(examples))
+    labels = tuple(open('data/labels/x2/labels.txt', 'r'))
+    print(labels)
+
+    total_error = 0
+    for label in labels:
+        components = label.split('|')
+        filename = components[0]
+        start_x, start_y = float(components[1]), float(components[2])
+        end_x, end_y = float(components[3]), float(components[4])
+        target = Engine.get_target(Screenshot(cv2.imread('data/labels/x2/' + filename), time.time()))
+        error = min(_distance(target, (start_x, start_y)), _distance(target, (end_x, end_y)))
+        if target.x <= max(start_x, end_x) and target >= min(start_x, end_x): # within X bounds
+            if target.y <= max(start_y, end_y) and target >= min(start_y, end_y): # within Y bounds
+                error = 0
+        total_error += (error ** 2)
+
+    return math.sqrt(total_error)
 
 
 def main():
