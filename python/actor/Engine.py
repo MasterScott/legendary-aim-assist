@@ -14,9 +14,9 @@ def _convert_binary(image):
 def get_target(screenshot):
 
     # This should be managed through StateManager & InputManager:
-    scope = Scope.x2
+    scope = StateManager.scope
 
-    # This should be managed through StateMAnager, InputManager, and ScreenShotManager
+    # This should be managed through StateManager, InputManager, and ScreenShotManager
     raw = screenshot.image
 
     # Filter the image with the right mask:
@@ -109,17 +109,17 @@ def get_target(screenshot):
             head_right += 1
         aim_x = int(round(((head_left + head_right) / 2)))
 
-        # DEBUG:
-        tgt = raw
-        for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
-            tgt[aim_y + i[0], head_left + i[1]] = [0, 255, 0]
-        for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
-            tgt[aim_y + i[0], head_right + i[1]] = [0, 255, 0]
-        for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
-            tgt[aim_y + i[0], aim_x + i[1]] = [255, 0, 0]
-
         # show the result:
         if StateManager.debug:
+
+            tgt = raw
+            for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
+                tgt[aim_y + i[0], head_left + i[1]] = [0, 255, 0]
+            for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
+                tgt[aim_y + i[0], head_right + i[1]] = [0, 255, 0]
+            for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
+                tgt[aim_y + i[0], aim_x + i[1]] = [255, 0, 0]
+
             cv2.imshow('filter', binary)
             cv2.imshow('lines', c)
             cv2.imshow('target', tgt)
@@ -131,4 +131,5 @@ def get_target(screenshot):
 def shoot():
     screenshot = ScreenshotManager.get_screenshot()
     target = get_target(screenshot)
-    Robot.click(target.x, target.y)
+    if target.confidence > .5:
+        Robot.click(target.x, target.y)

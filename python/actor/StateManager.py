@@ -1,13 +1,14 @@
-from actor.ReferenceManager import Scope
+from actor.ReferenceManager import Scope, HsvBounds
 import time
 import pynput
+import numpy as np
 
 aiming = False
 scope = Scope.x2
 _beast_time = -1
 shoot_button = pynput.mouse.Button.middle
 shoot_key = pynput.keyboard.Key.delete
-debug = True
+debug = False
 
 def toggle_beast():
     global _beast_time

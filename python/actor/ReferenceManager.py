@@ -2,6 +2,8 @@ import enum
 import numpy as np
 import cv2
 
+from actor import StateManager
+
 def scope_string(scope):
     return scope[len('Scope.'):]
 
@@ -21,6 +23,8 @@ class HsvBounds:
     def __init__(self, lower, upper):
         self.lower = lower
         self.upper = upper
+    def __str__(self):
+        return str(str(self.lower) + "," + str(self.upper))
 
 
 def get_aoi(scope):
@@ -32,7 +36,7 @@ def get_aoi(scope):
 
 def get_hsv(scope):
     if scope == Scope.x2:
-        return HsvBounds(np.array([1, 50, 60]), np.array([10, 175, 190]))  # Experimental for Canny
+        return HsvBounds(np.array([1, 20, 60]), np.array([9, 175, 190]))  # Experimental for Canny
         # return HsvBounds(np.array([1, 100, 70]), np.array([10, 170, 170])) # Stable for HSV only
     else:
         raise Exception("Unknown scope!")

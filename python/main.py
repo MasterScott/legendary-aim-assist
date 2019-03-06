@@ -2,13 +2,14 @@ import cv2
 import numpy as np
 import time
 import math
+import scipy.optimize as optimize
 
-from actor.ReferenceManager import Scope
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
-from actor import Robot
+from actor import Robot, StateManager
 from adt.Target import Target
 from actor import ReferenceManager, ScreenshotManager, Engine
+from actor.ReferenceManager import HsvBounds, Scope
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
@@ -35,35 +36,44 @@ def get_image():
     # return cv2.imread('out/1551643723862.png') # close, flash
     # return cv2.imread('out/1551643724589.png')  # heavy occlusion
 
+def _test_methods_cost(x):
+    StateManager.debug_hsv = HsvBounds(np.array([x[0], x[1], x[2]]), np.array([x[3], x[4], x[5]]))
+    StateManager.debug_canny = (x[6], x[7])
+    return _test_methods()
+
+
 def _test_methods():
-
     labels = tuple(open('data/labels/x2/labels.txt', 'r'))
-    print(labels)
-
     total_error = 0
     for label in labels:
         components = label.split('|')
-        filename = components[0]
+        filename = components[0].strip()
         start_x, start_y = float(components[1]), float(components[2])
         end_x, end_y = float(components[3]), float(components[4])
-        target = Engine.get_target(Screenshot(cv2.imread('data/labels/x2/' + filename), time.time()))
-        error = min(_distance(target, (start_x, start_y)), _distance(target, (end_x, end_y)))
-        if target.x <= max(start_x, end_x) and target >= min(start_x, end_x): # within X bounds
-            if target.y <= max(start_y, end_y) and target >= min(start_y, end_y): # within Y bounds
+        target = Engine.get_target(Screenshot(cv2.imread('data/samples/x2/' + filename), time.time()))
+        error = 1
+        # error = \
+        #     min(_distance((target.x, target.y), (start_x, start_y)), _distance((target.x, target.y), (end_x, end_y)))
+        if target.confidence < .5:
+            error = .5
+        elif min(start_x, end_x) <= target.x <= max(start_x, end_x):  # within X bounds
+            if min(start_y, end_y) <= target.y <= max(start_y, end_y):  # within Y bounds
                 error = 0
-        total_error += (error ** 2)
-
-    return math.sqrt(total_error)
+        else:
+            cv2.imshow('fail', cv2.imread('data/samples/x2/' + filename))
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        total_error += error
+    return total_error / len(labels)
 
 
 def main():
-
-    print(_test_methods())
+    print(_test_methods())  # currently 920
     return
 
     # start the screenshotting thread:
-    screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.get_screenshot, [StateManager.scope])
-    screenshotThread.start()
+    # screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.get_screenshot, [StateManager.scope])
+    # screenshotThread.start()
 
     # start the hook thread::
     # threading.Thread(target=InputManager.listen).start()

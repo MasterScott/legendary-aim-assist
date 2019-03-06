@@ -16,7 +16,7 @@ def click_and_crop(event, x, y, flags, param):
 
 def main():
     global refPt, cropping
-    refPt = []
+
     image_path = 'data/samples/x2/'
     label_path = 'data/labels/x2/labels.txt'
 
@@ -24,6 +24,7 @@ def main():
 
     global image
     for image_name in os.listdir(image_path):
+        refPt = []
         print(image_path + image_name)
         image = cv2.imread(image_path + image_name)
         clone = image.copy()
@@ -34,11 +35,11 @@ def main():
             key = cv2.waitKey(1) & 0xFF
             if key == ord("r"):
                 image = clone.copy()
+                refPt = []
             elif key == ord("c"):
                 break
 
         if len(refPt) == 2:
-            print(refPt[0][1], refPt[1][1], refPt[0][0], refPt[1][0])
             output.write(image_name + "|" +
                          str(refPt[0][0]) + "|" +
                          str(refPt[0][1]) + "|" +
