@@ -34,7 +34,6 @@ def listen():
             StateManager.scoping = True
         elif str(key) == StateManager.beast_key:
             StateManager.toggle_beast()
-            print("Beast Mode = " + str(StateManager.beast_mode()))
         elif str(key) in ReferenceManager.key_dict():
             StateManager.scope = ReferenceManager.key_dict()[str(key)]
 

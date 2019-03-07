@@ -39,6 +39,7 @@ def toggle_beast():
         _beast_time = time.time()
     else:
         _beast_time = -1
+    print("Beast Mode = " + str(beast_mode()))
 
 
 def beast_mode():
