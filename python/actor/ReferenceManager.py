@@ -4,6 +4,7 @@ import cv2
 
 from actor import StateManager
 
+
 def scope_string(scope):
     return scope[len('Scope.'):]
 
@@ -55,11 +56,14 @@ def _image_to_mask(img):
     return cv2.inRange(img, np.array([1, 1, 1]), np.array([255, 255, 255]))
 
 
+_mask_cache = dict()
 def get_mask(scope):
-    if scope == Scope.x2:
-        return _image_to_mask(cv2.imread('data/masks/x2/mask.png'))
-    else:
-        raise Exception("Unknown scope!")
+    if scope not in _mask_cache:
+        if scope == Scope.x2:
+            _mask_cache[scope] = _image_to_mask(cv2.imread('data/masks/x2/mask.png'))
+        else:
+            raise Exception("Unknown scope!")
+    return _mask_cache[scope]
 
 def key_dict():
     return {
