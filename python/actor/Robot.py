@@ -49,6 +49,7 @@ def act():
     if StateManager.aiming and StateManager.shooting:
         if StateManager.spray_mode or not StateManager.shot:
             target = Engine.get_target(StateManager.current_view)
-            move(target.x, target.y)
+            if target.confidence > .5:
+                move(target.x, target.y)
         shoot()
         StateManager.shot = True
