@@ -26,13 +26,14 @@ def move(x, y):
     y -= ReferenceManager.get_aim(StateManager.scope)[1]
 
     # Adjust for sensitivity
-    x *= StateManager.mouse_sensitivity
-    y *= StateManager.mouse_sensitivity
+    x /= StateManager.mouse_sensitivity
+    y /= StateManager.mouse_sensitivity
 
     # Move the mouse:
     mouse = pynput.mouse.Controller()
     for move in _smooth_moves(x, y, 3):
         mouse.move(move[0], move[1])
+        print(move[0], move[1])
         time.sleep(np.random.uniform(.001, .005))
 
 

@@ -10,7 +10,7 @@ shot = False
 _beast_time = -1
 scope = Scope.x2
 
-# Used to capture screenshots:
+# Used to store screenshots:
 current_view = None
 previous_view = None
 

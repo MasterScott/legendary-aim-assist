@@ -90,12 +90,12 @@ def main():
     #return
 
     # start the screenshotting thread (for data collection:
-    screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
-    screenshotThread.start()
+    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
+    screenshot_thread.start()
 
     # Start the aiming thread:
-    aimThread = BackgroundManager(float(1. / 1000), Robot.act, [])
-    aimThread.start()
+    aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
+    aim_thread.start()
 
     # start the hook thread:
     # threading.Thread(target=InputManager.listen).start()
@@ -104,7 +104,7 @@ def main():
     target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself
-    Robot.click(target.x, target.y)
+    Robot.move(target.x, target.y)
 
     print("Running...")
 
