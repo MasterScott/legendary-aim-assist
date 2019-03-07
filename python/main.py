@@ -94,7 +94,7 @@ def main():
     screenshotThread.start()
 
     # Start the aiming thread:
-    aimThread = BackgroundManager(float(1. / 1000), Robot.act, [StateManager.scope])
+    aimThread = BackgroundManager(float(1. / 1000), Robot.act, [])
     aimThread.start()
 
     # start the hook thread:
