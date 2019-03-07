@@ -48,8 +48,9 @@ def shoot():
 def act():
     if StateManager.aiming and StateManager.shooting:
         if StateManager.spray_mode or not StateManager.shot:
-            target = Engine.get_target(StateManager.current_view)
-            if target.confidence > .5:
-                move(target.x, target.y)
+            if StateManager.beast_mode() or (StateManager.scope in [ReferenceManager.Scope.x1t]):
+                target = Engine.get_target(StateManager.current_view)
+                if target.confidence > .5:
+                    move(target.x, target.y)
         shoot()
         StateManager.shot = True
