@@ -16,6 +16,7 @@ def listen():
         if button == pynput.mouse.Button.right:
             StateManager.aiming = pressed
         if button == StateManager.shoot_button:
+            StateManager.shooting = pressed
             Engine.shoot()
         return True
 

@@ -78,8 +78,8 @@ def get_target(screenshot):
         target_h = stats[biggest_shape][cv2.CC_STAT_HEIGHT]
 
         # estimate the head from the bounding box:
-        head_x = int(round(target_x + (target_w / 2.)))
-        head_y = int(round(target_y + (target_h / 5.)))
+        head_x = stats[biggest_shape][0] # int(round(target_x + (target_w / 2.)))
+        head_y = int(round(target_y + (target_h / 5.25)))
 
         # walk the head around until you find a shot:
         aim_x = head_x

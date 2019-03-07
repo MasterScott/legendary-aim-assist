@@ -18,13 +18,15 @@ def _smooth_moves(x, y, segments=3):
         y_moves.append(y - np.sum(y_moves))
     return zip(x_moves, y_moves)
 
-
-# TODO figure out how to normalize this based on mouse sensitivity (this is windows only)
 def click(x, y):
 
-    # adjust for aim point
+    # Adjust for aim point
     x -= ReferenceManager.get_aim(StateManager.scope)[0]
     y -= ReferenceManager.get_aim(StateManager.scope)[1]
+
+    # Adjust for sensitivity
+    x *= StateManager.mouse_sensitivity
+    y *= StateManager.mouse_sensitivity
 
     # Move the mouse:
     mouse = pynput.mouse.Controller()

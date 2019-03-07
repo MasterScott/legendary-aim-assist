@@ -27,30 +27,30 @@ fails = [
 
 ]
 def get_image():
-    # return cv2.imread('out/1551643714397.png')  # clean sample
-    # return cv2.imread('out/1551643715076.png')  # occluded
-    # return cv2.imread('out/1551643723461.png')  # very close
-    # return cv2.imread('out/1551644022774.png')  # moderately far
-    # return cv2.imread('out/1551644025498.png')  # noisy
-    # return cv2.imread('out/1551644032348.png')  # noisy
-    # return cv2.imread('out/1551644036303.png')  # noisy
-    # return cv2.imread('out/1551644037278.png')  # hit marker
-    # return cv2.imread('out/1551643714966.png')  # also occluded
-    # return cv2.imread('out/1551643723862.png')  # smoky
-    # return cv2.imread('out/1551644032232.png')  # trail
-    # return cv2.imread('out/1551644032600.png')  # trail
-    # return cv2.imread('out/1551644033718.png')  # flash
-    # return cv2.imread('out/1551643710602.png')  # crawl
-    # return cv2.imread('out/1551643714726.png')  # occluded
-    # return cv2.imread('out/1551643716105.png')  # mirage # fails, but understandably
-    # return cv2.imread('out/1551643723862.png') # close, flash
-    # return cv2.imread('out/1551643724589.png')  # heavy occlusion
-    return fails[0]
+    return cv2.imread('data/samples/x2/1551643714397.png')  # clean sample
+    # return cv2.imread('data/samples/x2data/samples/x2/1551643715076.png')  # occluded
+    # return cv2.imread('data/samples/x2/1551643723461.png')  # very close
+    # return cv2.imread('data/samples/x2/1551644022774.png')  # moderately far
+    # return cv2.imread('data/samples/x2/1551644025498.png')  # noisy
+    # return cv2.imread('data/samples/x2/1551644032348.png')  # noisy
+    # return cv2.imread('data/samples/x2/1551644036303.png')  # noisy
+    # return cv2.imread('data/samples/x2/1551644037278.png')  # hit marker
+    # return cv2.imread('data/samples/x2/1551643714966.png')  # also occluded
+    # return cv2.imread('data/samples/x2/1551643723862.png')  # smoky
+    # return cv2.imread('data/samples/x2/1551644032232.png')  # trail
+    # return cv2.imread('data/samples/x2/1551644032600.png')  # trail
+    # return cv2.imread('data/samples/x2/1551644033718.png')  # flash
+    # return cv2.imread('data/samples/x2/1551643710602.png')  # crawl
+    # return cv2.imread('data/samples/x2/1551643714726.png')  # occluded
+    # return cv2.imread('data/samples/x2/1551643716105.png')  # mirage # fails, but understandably
+    # return cv2.imread('data/samples/x2/1551643723862.png') # close, flash
+    # return cv2.imread('data/samples/x2/1551643724589.png')  # heavy occlusion
+    # return fails[2]
 
-def _test_methods_cost(x):
-    StateManager.debug_hsv = HsvBounds(np.array([x[0], x[1], x[2]]), np.array([x[3], x[4], x[5]]))
-    StateManager.debug_canny = (x[6], x[7])
-    return _test_methods()
+# def _test_methods_cost(x):
+#     StateManager.debug_hsv = HsvBounds(np.array([x[0], x[1], x[2]]), np.array([x[3], x[4], x[5]]))
+#     StateManager.debug_canny = (x[6], x[7])
+#     return _test_methods()
 
 
 def _test_methods():
@@ -86,10 +86,10 @@ def _test_methods():
 def main():
 
     # _test_methods()
-    # Engine.get_target(Screenshot(cv2.imread('data/samples/x2/' + get_image()), time.time()))
+    #Engine.get_target(Screenshot(cv2.imread('data/samples/x2/' + get_image()), time.time()))
 
-    print(_test_methods())  # currently ~22%
-    return
+    #print(_test_methods())  # currently ~22%
+    #return
 
     # start the screenshotting thread:
     # screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.get_screenshot, [StateManager.scope])
