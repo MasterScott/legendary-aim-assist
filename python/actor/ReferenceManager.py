@@ -8,7 +8,9 @@ def scope_string(scope):
     return scope[len('Scope.'):]
 
 class Scope(enum.Enum):
-    x2 = 1
+    x1t = 1
+    x1h = 2
+    x2 = 3
 
 
 class AreaOfInterest:
@@ -58,3 +60,11 @@ def get_mask(scope):
         return _image_to_mask(cv2.imread('data/masks/x2/mask.png'))
     else:
         raise Exception("Unknown scope!")
+
+def key_dict():
+    return {
+        StateManager.x2_key:  Scope.x2,
+        StateManager.x1h_key: Scope.x1h,
+        StateManager.x1t_key: Scope.x1t
+    }
+

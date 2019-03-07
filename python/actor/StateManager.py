@@ -19,6 +19,15 @@ shoot_button = pynput.mouse.Button.middle
 shoot_key = pynput.keyboard.Key.delete
 mouse_sensitivity = 1.  # TODO
 spray_mode = False
+beast_key = "'z'"
+
+# Scope settings:
+scope_key = pynput.keyboard.Key.alt
+scoping = False
+x1t_key = "'h'"
+x1h_key = "'j"
+x2_key = "'k"
+
 
 # Debug
 debug = False

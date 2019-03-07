@@ -3,6 +3,7 @@ import time
 
 from actor import StateManager
 from actor import ScreenshotManager
+from actor import ReferenceManager
 from actor import Robot
 from actor import Engine
 
@@ -29,15 +30,19 @@ def listen():
         return True
 
     def on_press(key):
-
-        # z toggles beast mode
-        if str(key) == "'z'":
+        if str(key) == StateManager.scope_key:
+            StateManager.scoping = True
+        elif str(key) == StateManager.beast_key:
             StateManager.toggle_beast()
             print("Beast Mode = " + str(StateManager.beast_mode()))
+        elif str(key) in ReferenceManager.key_dict():
+            StateManager.scope = ReferenceManager.key_dict()[str(key)]
 
-        # TODO add other buttons to switch scopes
+    def on_release(key):
+        if str(key) == StateManager.scope_key:
+            StateManager.scoping = False
 
-    with pynput.keyboard.Listener(on_press=on_press) as kb_listener:
+    with pynput.keyboard.Listener(on_press=on_press, on_release=on_release) as kb_listener:
         with pynput.mouse.Listener(on_click=on_click) as mouse_listener:
             kb_listener.join()
             mouse_listener.join()
