@@ -85,17 +85,19 @@ def _test_methods():
 
 def main():
 
-    # _test_methods()
-    #Engine.get_target(Screenshot(cv2.imread('data/samples/x2/' + get_image()), time.time()))
-
-    #print(_test_methods())  # currently ~22%
+    # Test the performance on labelled data:
+    #print(_test_methods())  # currently ~22% miss rate
     #return
 
-    # start the screenshotting thread:
-    # screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.get_screenshot, [StateManager.scope])
-    # screenshotThread.start()
+    # start the screenshotting thread (for data collection:
+    screenshotThread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
+    screenshotThread.start()
 
-    # start the hook thread::
+    # Start the aiming thread:
+    aimThread = BackgroundManager(float(1. / 1000), Robot.act, [StateManager.scope])
+    aimThread.start()
+
+    # start the hook thread:
     # threading.Thread(target=InputManager.listen).start()
 
     # Invoke this for debug purposes

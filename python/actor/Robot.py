@@ -1,5 +1,6 @@
 from actor import StateManager
 from actor import ReferenceManager
+from actor import Engine
 import pynput
 import time
 import numpy as np
@@ -18,8 +19,8 @@ def _smooth_moves(x, y, segments=3):
         y_moves.append(y - np.sum(y_moves))
     return zip(x_moves, y_moves)
 
-def click(x, y):
 
+def move(x, y):
     # Adjust for aim point
     x -= ReferenceManager.get_aim(StateManager.scope)[0]
     y -= ReferenceManager.get_aim(StateManager.scope)[1]
@@ -34,10 +35,18 @@ def click(x, y):
         mouse.move(move[0], move[1])
         time.sleep(np.random.uniform(.001, .005))
 
+
+def shoot():
     # Press the shoot button:
     keyboard = pynput.keyboard.Controller()
     keyboard.press(StateManager.shoot_key)
-    time.sleep(.005)
+    time.sleep(np.random.uniform(.004, .006))
     keyboard.release(StateManager.shoot_key)
 
-
+def act():
+    if StateManager.aiming and StateManager.shooting:
+        if StateManager.spray_mode or not StateManager.shot:
+            target = Engine.get_target(StateManager.current_view)
+            move(target.x, target.y)
+            shoot()
+            StateManager.shot = True

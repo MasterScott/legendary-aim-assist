@@ -5,16 +5,16 @@ import time
 from actor import StateManager, ReferenceManager
 from adt.Screenshot import Screenshot
 
-# Returns a screenshot and optionally saves it
+# Updates the statemanager view, and optionally saves it as an image
 # Typically takes <10 ms, or <30ms if saving.
-def get_screenshot(save=False):
+def update_view(save=False):
     if StateManager.aiming and StateManager.beast_mode:
         image = _gsk_screenshot(ReferenceManager.get_aoi(StateManager.scope))
         timestamp = int(round(time.time() * 1000))
         screenshot = Screenshot(image, timestamp)
         if save:
-            image.save("out_test/" + str(timestamp) + ".png")
-        return screenshot
+            image.save("out/" + str(timestamp) + ".png")
+        StateManager.update_view(screenshot)
 
 # Private method used to efficiently take screenshots
 def _gsk_screenshot(aoi):

@@ -6,8 +6,13 @@ import numpy as np
 # Used to track program state
 aiming = False
 shooting = False
+shot = False
 _beast_time = -1
 scope = Scope.x2
+
+# Used to capture screenshots:
+current_view = None
+previous_view = None
 
 # User settings:
 shoot_button = pynput.mouse.Button.middle
@@ -16,7 +21,9 @@ mouse_sensitivity = 1.  # TODO
 spray_mode = False
 
 # Debug
-debug = False# Helper functions:
+debug = False
+
+# Helper functions:
 def toggle_beast():
     global _beast_time
     if not beast_mode():
@@ -27,3 +34,14 @@ def toggle_beast():
 
 def beast_mode():
     return time.time() - _beast_time <= 45
+
+def clear_view():
+    global current_view, previous_view
+    current_view = None
+    previous_view = None
+
+def update_view(view):
+    global current_view, previous_view
+    previous_view = current_view
+    current_view = view
+
