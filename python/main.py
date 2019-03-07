@@ -3,10 +3,11 @@ import numpy as np
 import time
 import math
 import scipy.optimize as optimize
+import threading
 
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
-from actor import Robot, StateManager
+from actor import Robot, StateManager, InputManager
 from adt.Target import Target
 from actor import ReferenceManager, ScreenshotManager, Engine
 from actor.ReferenceManager import HsvBounds, Scope
@@ -15,17 +16,6 @@ from actor.ReferenceManager import HsvBounds, Scope
 def _distance(a, b):
     return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
-# Method used to debug by pulling in an example image:
-fails = [
-'1551644032715.png', # actually a hit, muzzle flash
-'1551644023828.png', # muzzle flash
-'1551644024172.png', # hit, but too low
-'1551644035595.png', # gun hit
-'1551644024062.png', # hit, but too low
-'1551644022402.png', # perfect hit
-'1551643714966.png', # gun hit
-
-]
 def get_image():
     return cv2.imread('data/samples/x2/1551643714397.png')  # clean sample
     # return cv2.imread('data/samples/x2data/samples/x2/1551643715076.png')  # occluded
@@ -45,8 +35,8 @@ def get_image():
     # return cv2.imread('data/samples/x2/1551643716105.png')  # mirage # fails, but understandably
     # return cv2.imread('data/samples/x2/1551643723862.png') # close, flash
     # return cv2.imread('data/samples/x2/1551643724589.png')  # heavy occlusion
-    # return fails[2]
 
+# Used to optimize parameters:
 # def _test_methods_cost(x):
 #     StateManager.debug_hsv = HsvBounds(np.array([x[0], x[1], x[2]]), np.array([x[3], x[4], x[5]]))
 #     StateManager.debug_canny = (x[6], x[7])
@@ -98,7 +88,7 @@ def main():
     aim_thread.start()
 
     # start the hook thread:
-    # threading.Thread(target=InputManager.listen).start()
+    threading.Thread(target=InputManager.listen).start()
 
     # Invoke this for debug purposes
     target = Engine.get_target(Screenshot(get_image(), time.time()))

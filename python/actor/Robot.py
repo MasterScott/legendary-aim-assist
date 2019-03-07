@@ -33,21 +33,22 @@ def move(x, y):
     mouse = pynput.mouse.Controller()
     for move in _smooth_moves(x, y, 3):
         mouse.move(move[0], move[1])
-        print(move[0], move[1])
         time.sleep(np.random.uniform(.001, .005))
 
 
 def shoot():
-    # Press the shoot button:
     keyboard = pynput.keyboard.Controller()
-    keyboard.press(StateManager.shoot_key)
-    time.sleep(np.random.uniform(.004, .006))
-    keyboard.release(StateManager.shoot_key)
+    if StateManager.shooting:
+        keyboard.press(StateManager.shoot_key)
+        time.sleep(np.random.uniform(.004, .006))
+    if not StateManager.shooting:
+        keyboard.release(StateManager.shoot_key)
+
 
 def act():
     if StateManager.aiming and StateManager.shooting:
         if StateManager.spray_mode or not StateManager.shot:
             target = Engine.get_target(StateManager.current_view)
             move(target.x, target.y)
-            shoot()
-            StateManager.shot = True
+        shoot()
+        StateManager.shot = True
