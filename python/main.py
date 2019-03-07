@@ -7,10 +7,8 @@ import threading
 
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
-from actor import Robot, StateManager, InputManager
-from adt.Target import Target
-from actor import ReferenceManager, ScreenshotManager, Engine
-from actor.ReferenceManager import HsvBounds, Scope
+from actor import Robot, InputManager
+from actor import ScreenshotManager, Engine
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
