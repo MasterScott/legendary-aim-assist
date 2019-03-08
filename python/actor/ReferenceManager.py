@@ -46,23 +46,15 @@ def get_aoi(scope):
 
 
 def get_hsv(scope):
-    if scope == Scope.x2:
-        return HsvBounds(np.array([1, 50, 60]), np.array([10, 180, 190]))  # Experimental for Canny
-        # return HsvBounds(np.array([1, 100, 70]), np.array([10, 170, 170])) # Stable for HSV only
+    if scope in key_dict().values() and scope not in [Scope.x1t]: # TODO determine the colors for the x1t scope
+        return HsvBounds(np.array([1, 50, 60]), np.array([10, 180, 190]))
     else:
         raise Exception("Unknown scope!")
 
 
 def get_aim(scope):
-    if scope == Scope.x2:
-        return [145, 60]
-    elif scope == Scope.x2v:
-        return [960, -1]
-    elif scope == Scope.x4v:
-        return [960, 539]
-    else:
-        raise Exception("Unknown scope!")
-
+    aoi = get_aoi(scope)
+    return [960 - aoi.x, 539 - aoi.y]
 
 def _image_to_mask(img):
     return cv2.inRange(img, np.array([1, 1, 1]), np.array([255, 255, 255]))
@@ -71,8 +63,8 @@ def _image_to_mask(img):
 _mask_cache = dict()
 def get_mask(scope):
     if scope not in _mask_cache:
-        if scope == Scope.x2:
-            _mask_cache[scope] = _image_to_mask(cv2.imread('data/masks/x2/mask.png'))
+        if scope in key_dict().values():
+            _mask_cache[scope] = _image_to_mask(cv2.imread('data/masks/' + scope_string(scope) + '/mask.png'))
         else:
             raise Exception("Unknown scope!")
     return _mask_cache[scope]
@@ -81,6 +73,7 @@ def key_dict():
     return {
         StateManager.x2_key:  Scope.x2,
         StateManager.x1h_key: Scope.x1h,
-        StateManager.x1t_key: Scope.x1t
+        StateManager.x1t_key: Scope.x1t,
+        StateManager.x4v_key: Scope.x4v
     }
 
