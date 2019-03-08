@@ -16,23 +16,6 @@ def _distance(a, b):
 
 def get_image():
     return cv2.imread('data/samples/x2/1551643714397.png')  # clean sample
-    # return cv2.imread('data/samples/x2data/samples/x2/1551643715076.png')  # occluded
-    # return cv2.imread('data/samples/x2/1551643723461.png')  # very close
-    # return cv2.imread('data/samples/x2/1551644022774.png')  # moderately far
-    # return cv2.imread('data/samples/x2/1551644025498.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644032348.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644036303.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644037278.png')  # hit marker
-    # return cv2.imread('data/samples/x2/1551643714966.png')  # also occluded
-    # return cv2.imread('data/samples/x2/1551643723862.png')  # smoky
-    # return cv2.imread('data/samples/x2/1551644032232.png')  # trail
-    # return cv2.imread('data/samples/x2/1551644032600.png')  # trail
-    # return cv2.imread('data/samples/x2/1551644033718.png')  # flash
-    # return cv2.imread('data/samples/x2/1551643710602.png')  # crawl
-    # return cv2.imread('data/samples/x2/1551643714726.png')  # occluded
-    # return cv2.imread('data/samples/x2/1551643716105.png')  # mirage # fails, but understandably
-    # return cv2.imread('data/samples/x2/1551643723862.png') # close, flash
-    # return cv2.imread('data/samples/x2/1551643724589.png')  # heavy occlusion
 
 # Used to optimize parameters:
 # def _test_methods_cost(x):
@@ -69,20 +52,6 @@ def _test_methods():
             pass
         total_error += error
     return total_error / len(labels)
-
-# # You must manually paint the masking areas black between steps
-# def _prep_mask(step=2, scope=ReferenceManager.Scope.x4v):
-#     scope_string = ReferenceManager.scope_string(scope)
-#     if step == 1:
-#         image = cv2.imread("C:\\Users\\Eric\\Desktop\\" + scope_string + ".png")
-#         aoi = ReferenceManager.get_aoi(scope)
-#         image = image[aoi.y:(aoi.y + aoi.h), aoi.x:(aoi.x + aoi.w)]
-#         cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", image)
-#     elif step == 2:
-#         image = cv2.imread("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png")
-#         grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-#         _, binary = cv2.threshold(grey, 1, 255, cv2.THRESH_BINARY)
-#         cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", binary)
 
 def main():
 
