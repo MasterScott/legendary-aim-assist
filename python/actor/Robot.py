@@ -16,7 +16,8 @@ def _smooth_moves(x, y, segments=3):
     y_moves = []
     for i in range(segments - 1):
         y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))))
-        y_moves.append(y - np.sum(y_moves))
+    y_moves.append(y - np.sum(y_moves))
+    
     return zip(x_moves, y_moves)
 
 
@@ -32,6 +33,7 @@ def move(x, y):
     # Move the mouse:
     mouse = pynput.mouse.Controller()
     for move in _smooth_moves(x, y, 3):
+        print(move[0], move[1])
         mouse.move(move[0], move[1])
         time.sleep(np.random.uniform(.001, .005))
 

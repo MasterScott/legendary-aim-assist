@@ -8,7 +8,7 @@ import threading
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
 from actor import Robot, InputManager
-from actor import ScreenshotManager, Engine
+from actor import ScreenshotManager, Engine, StateManager
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
@@ -73,26 +73,29 @@ def _test_methods():
 
 def main():
 
-    # Test the performance on labelled data:
-    #print(_test_methods())  # currently ~22% miss rate
-    #return
-
-    # start the screenshotting thread (for data collection:
-    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
-    screenshot_thread.start()
-
-    # Start the aiming thread:
-    aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
-    aim_thread.start()
-
-    # start the hook thread:
-    threading.Thread(target=InputManager.listen).start()
-
-    # Invoke this for debug purposes
-    target = Engine.get_target(Screenshot(get_image(), time.time()))
-
-    # Normally, this would be invoked by the Engine itself
-    Robot.move(target.x, target.y)
+    # # Test the performance on labelled data:
+    # #print(_test_methods())  # currently ~22% miss rate
+    # #return
+    #
+    # # start the screenshotting thread (for data collection:
+    # screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
+    # screenshot_thread.start()
+    #
+    # # Start the aiming thread:
+    # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
+    # aim_thread.start()
+    #
+    # # start the hook thread:
+    # threading.Thread(target=InputManager.listen).start()
+    #
+    # # Invoke this for debug purposes
+    # target = Engine.get_target(Screenshot(get_image(), time.time()))
+    #
+    # # Normally, this would be invoked by the Engine itself
+    time.sleep(5)
+    StateManager.mouse_sensitivity = 1.
+    Robot.move(-67, 32)
+    # Robot.move(target.x, target.y)
 
     print("Running...")
 
