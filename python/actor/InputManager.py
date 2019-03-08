@@ -30,15 +30,16 @@ def listen():
         return True
 
     def on_press(key):
-        if str(key) == StateManager.scope_key:
+        if key == StateManager.scope_key:
             StateManager.scoping = True
         elif str(key) == StateManager.beast_key:
             StateManager.toggle_beast()
-        elif str(key) in ReferenceManager.key_dict():
+        elif StateManager.scoping and str(key) in ReferenceManager.key_dict():
             StateManager.scope = ReferenceManager.key_dict()[str(key)]
+            print("Scope = " + str(StateManager.scope))
 
     def on_release(key):
-        if str(key) == StateManager.scope_key:
+        if key == StateManager.scope_key:
             StateManager.scoping = False
 
     with pynput.keyboard.Listener(on_press=on_press, on_release=on_release) as kb_listener:

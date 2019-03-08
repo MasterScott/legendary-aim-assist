@@ -73,11 +73,11 @@ def main():
     # aim_thread.start()
     #
     # # start the hook thread:
-    # threading.Thread(target=InputManager.listen).start()
+    threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
-    StateManager.scope = ReferenceManager.Scope.x1h
-    target = Engine.get_target(Screenshot(get_image(), time.time()))
+    # StateManager.scope = ReferenceManager.Scope.x1h
+    # target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself
     # Robot.move(target.x, target.y)
