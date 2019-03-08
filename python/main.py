@@ -8,7 +8,7 @@ import threading
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
 # from actor import Robot, InputManager, ScreenshotManager
-from actor import Engine, StateManager, ReferenceManager
+from actor import Engine, StateManager, ReferenceManager, InputManager
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
@@ -85,7 +85,7 @@ def main():
     # aim_thread.start()
     #
     # # start the hook thread:
-    # threading.Thread(target=InputManager.listen).start()
+    threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
     StateManager.debug = True
