@@ -7,7 +7,7 @@ import threading
 
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
-# from actor import Robot, InputManager, ScreenshotManager
+from actor import Robot, InputManager, ScreenshotManager
 from actor import Engine, StateManager, ReferenceManager, InputManager
 
 # Function for finding the euclidean distance between two tuples representing points:
@@ -15,11 +15,15 @@ def _distance(a, b):
     return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
 def get_image():
-
-    # return cv2.imread('data/samples/x1h/1552066530035.png')
-    # return cv2.imread('data/samples/x1h/1552066530723.png')
-    # return cv2.imread('data/samples/x1h/1552066530771.png')
-    return cv2.imread('data/samples/x1h/1552066538577.png')
+    return cv2.imread('data/samples/x2/1552079474806.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
 
 # Used to optimize parameters:
 # def _test_methods_cost(x):
@@ -36,7 +40,7 @@ def _test_methods(scope=ReferenceManager.Scope.x1h):
     for label in labels:
         components = label.split('|')
         filename = components[0].strip()
-        confidence = components[1]
+        confidence = int(components[1])
         start_x, start_y = float(components[2]), float(components[3])
         end_x, end_y = float(components[4]), float(components[5])
         target = Engine.get_target(Screenshot(cv2.imread('data/samples/' + ReferenceManager.scope_string(scope) + '/' + filename), time.time()))
@@ -51,7 +55,7 @@ def _test_methods(scope=ReferenceManager.Scope.x1h):
                 print("Gave up on " + filename)
                 error = .5
             else:
-                error = 1
+                error = 0
         elif min(start_x, end_x) <= target.x <= max(start_x, end_x):  # within X bounds
             if min(start_y, end_y) <= target.y <= max(start_y, end_y):  # within Y bounds
                 error = 0
@@ -70,15 +74,15 @@ def main():
 
     # Test the performance on labelled data:
     # Currently:
-    #  x1h: 0.08677685950413223
+    #  x1h: 0.045454545454545456
+    #  x2:  0.05238095238095238
     print(_test_methods())
     # #return
 
     # # start the screenshotting thread (for data collection:
-    # StateManager.aiming = True
-    # StateManager.scope = ReferenceManager.Scope.x1h
-    # screenshot_thread = BackgroundManager(float(10. / 1000), ScreenshotManager.update_view, [True])
-    # screenshot_thread.start()
+    StateManager.scope = ReferenceManager.Scope.x1t
+    screenshot_thread = BackgroundManager(float(20. / 1000), ScreenshotManager.update_view, [True])
+    screenshot_thread.start()
     #
     # # Start the aiming thread:
     # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
@@ -88,9 +92,9 @@ def main():
     threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
-    StateManager.debug = True
-    StateManager.scope = ReferenceManager.Scope.x1h
-    target = Engine.get_target(Screenshot(get_image(), time.time()))
+    # StateManager.debug = True
+    # StateManager.scope = ReferenceManager.Scope.x2
+    # target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself
     # Robot.move(target.x, target.y)

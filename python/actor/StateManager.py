@@ -30,7 +30,7 @@ x2_key = "'k'"
 x4v_key = "'l'"
 
 # Debug
-debug = True
+debug = False
 screenshot_path = "out/"
 
 # Helper functions:

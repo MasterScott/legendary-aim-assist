@@ -8,7 +8,7 @@ from adt.Screenshot import Screenshot
 # Updates the statemanager view, and optionally saves it as an image
 # Typically takes <10 ms, or <30ms if saving.
 def update_view(save=False):
-    if StateManager.aiming and StateManager.beast_mode:
+    if StateManager.aiming and StateManager.beast_mode():
         image = _gsk_screenshot(ReferenceManager.get_aoi(StateManager.scope))
         timestamp = int(round(time.time() * 1000))
         screenshot = Screenshot(image, timestamp)

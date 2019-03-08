@@ -19,16 +19,17 @@ def click_and_crop(event, x, y, flags, param):
 def main():
     global refPt, cropping
 
-    StateManager.scope = ReferenceManager.Scope.x1h
+    StateManager.scope = ReferenceManager.Scope.x2
     image_path = 'data/samples/' + ReferenceManager.scope_string(StateManager.scope) + '/'
     label_path = 'data/labels/' + ReferenceManager.scope_string(StateManager.scope) + '/labels.txt'
 
     output = open(label_path, "w+")
 
     global image
+    i = 0
     for image_name in os.listdir(image_path):
         refPt = []
-        print(image_path + image_name)
+        print(image_path + image_name, i)
         image = cv2.imread(image_path + image_name)
         target = Engine.get_target(Screenshot(image, time.time()))
         for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
