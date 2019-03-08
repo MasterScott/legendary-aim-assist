@@ -15,7 +15,10 @@ def _distance(a, b):
     return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
 def get_image():
-    return cv2.imread('data/samples/x2/1551643714397.png')  # clean sample
+    return cv2.imread('data/samples/x1h/1552066530479.png')
+    # return cv2.imread('data/samples/x1h/1552066538286.png')
+    # return cv2.imread('data/samples/x1h/1552066539021.png')
+    # return cv2.imread('data/samples/x1h/1552066542905.png')
 
 # Used to optimize parameters:
 # def _test_methods_cost(x):
@@ -61,19 +64,20 @@ def main():
 
     # # start the screenshotting thread (for data collection:
     # StateManager.aiming = True
-    StateManager.scope = ReferenceManager.Scope.x1h
-    screenshot_thread = BackgroundManager(float(10. / 1000), ScreenshotManager.update_view, [True])
-    screenshot_thread.start()
+    # StateManager.scope = ReferenceManager.Scope.x1h
+    # screenshot_thread = BackgroundManager(float(10. / 1000), ScreenshotManager.update_view, [True])
+    # screenshot_thread.start()
     #
     # # Start the aiming thread:
     # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
     # aim_thread.start()
     #
     # # start the hook thread:
-    threading.Thread(target=InputManager.listen).start()
+    # threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
-    # target = Engine.get_target(Screenshot(get_image(), time.time()))
+    StateManager.scope = ReferenceManager.Scope.x1h
+    target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself
     # Robot.move(target.x, target.y)

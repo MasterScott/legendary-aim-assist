@@ -1,4 +1,3 @@
-from actor.ReferenceManager import Scope, HsvBounds
 import time
 import pynput
 import numpy as np
@@ -8,7 +7,6 @@ aiming = False
 shooting = False
 shot = False
 _beast_time = -1
-scope = Scope.x2
 
 # Used to store screenshots:
 current_view = None
@@ -21,6 +19,7 @@ x_sensitivity = 12.5
 y_sensitivity = 26
 spray_mode = False
 beast_key = "'z'"
+scope = None
 
 # Scope settings:
 scope_key = pynput.keyboard.Key.alt
@@ -31,7 +30,7 @@ x2_key = "'k"
 x4v_key = "'l'"
 
 # Debug
-debug = False
+debug = True
 screenshot_path = "out/"
 
 # Helper functions:

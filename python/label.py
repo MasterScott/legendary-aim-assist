@@ -1,6 +1,8 @@
 import cv2
 import os
-
+import time
+from actor import Engine, StateManager, ReferenceManager
+from adt.Screenshot import Screenshot
 
 def click_and_crop(event, x, y, flags, param):
     global refPt, cropping
@@ -17,8 +19,9 @@ def click_and_crop(event, x, y, flags, param):
 def main():
     global refPt, cropping
 
-    image_path = 'data/samples/x2/'
-    label_path = 'data/labels/x2/labels.txt'
+    StateManager.scope = ReferenceManager.Scope.x1h
+    image_path = 'data/samples/' + ReferenceManager.scope_string(StateManager.scope) + '/'
+    label_path = 'data/labels/' + ReferenceManager.scope_string(StateManager.scope) + '/labels.txt'
 
     output = open(label_path, "w+")
 
@@ -27,6 +30,9 @@ def main():
         refPt = []
         print(image_path + image_name)
         image = cv2.imread(image_path + image_name)
+        target = Engine.get_target(Screenshot(image, time.time()))
+        for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
+            image[target.y + i[0], target.y + i[1]] = [0, 255, 0]
         clone = image.copy()
         cv2.namedWindow("image")
         cv2.setMouseCallback("image", click_and_crop)
@@ -40,11 +46,16 @@ def main():
                 break
 
         if len(refPt) == 2:
-            output.write(image_name + "|" +
-                         str(refPt[0][0]) + "|" +
-                         str(refPt[0][1]) + "|" +
-                         str(refPt[1][0]) + "|" +
-                         str(refPt[1][1]) + "\n")
+            confidence = 1
+        else:
+            confidence = 0
+            refPt = [[-1, -1], [-1, -1]]
+        output.write(image_name + "|" +
+                     str(confidence) + "|" +
+                     str(refPt[0][0]) + "|" +
+                     str(refPt[0][1]) + "|" +
+                     str(refPt[1][0]) + "|" +
+                     str(refPt[1][1]) + "\n")
 
         cv2.destroyAllWindows()
     output.close()
