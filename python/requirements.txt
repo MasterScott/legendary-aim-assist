@@ -6,3 +6,4 @@ pywin32
 pynput
 mss
 scipy
+pywinauto

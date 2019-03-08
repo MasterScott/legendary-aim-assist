@@ -2,6 +2,7 @@ from actor import StateManager
 from actor import ReferenceManager
 from actor import Engine
 import pynput
+import win32api, win32con
 import time
 import numpy as np
 
@@ -17,24 +18,26 @@ def _smooth_moves(x, y, segments=3):
     for i in range(segments - 1):
         y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))))
     y_moves.append(y - np.sum(y_moves))
-    
+
     return zip(x_moves, y_moves)
 
-
 def move(x, y):
+
     # Adjust for aim point
-    x -= ReferenceManager.get_aim(StateManager.scope)[0]
-    y -= ReferenceManager.get_aim(StateManager.scope)[1]
+    # x -= ReferenceManager.get_aim(StateManager.scope)[0]
+    # y -= ReferenceManager.get_aim(StateManager.scope)[1]
 
     # Adjust for sensitivity
-    x /= StateManager.mouse_sensitivity
-    y /= StateManager.mouse_sensitivity
+    x /= StateManager.x_sensitivity
+    y /= StateManager.y_sensitivity
+
+    print(x, y)
+
 
     # Move the mouse:
-    mouse = pynput.mouse.Controller()
     for move in _smooth_moves(x, y, 3):
-        print(move[0], move[1])
-        mouse.move(move[0], move[1])
+        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE,
+                             int(move[0] * 65535 / win32api.GetSystemMetrics(0)), int(move[1] * 65535 / win32api.GetSystemMetrics(1)))
         time.sleep(np.random.uniform(.001, .005))
 
 

@@ -8,7 +8,7 @@ import threading
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
 from actor import Robot, InputManager
-from actor import ScreenshotManager, Engine, StateManager
+from actor import ScreenshotManager, Engine, StateManager, ReferenceManager
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
@@ -92,9 +92,8 @@ def main():
     # target = Engine.get_target(Screenshot(get_image(), time.time()))
     #
     # # Normally, this would be invoked by the Engine itself
-    time.sleep(5)
-    StateManager.mouse_sensitivity = 1.
-    Robot.move(-67, 32)
+    time.sleep(3)
+    Robot.move(-71, -92)
     # Robot.move(target.x, target.y)
 
     print("Running...")
