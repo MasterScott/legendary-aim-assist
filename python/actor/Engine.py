@@ -4,7 +4,7 @@ import time
 
 from actor.ReferenceManager import Scope
 from adt.Target import Target
-from actor import ReferenceManager, ScreenshotManager, Robot, StateManager
+from actor import ReferenceManager, ScreenshotManager, StateManager
 
 def _convert_binary(image):
     grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -31,7 +31,6 @@ def get_target(screenshot):
     final_mask = cv2.erode(mask, np.ones((1, 2), np.uint8), iterations=1)
     final_mask = cv2.dilate(final_mask, np.ones((2, 3), np.uint8), iterations=4)
 
-
     # Apply the mask:
     hsv = cv2.bitwise_and(hsv, hsv, mask=final_mask)
 
@@ -43,7 +42,7 @@ def get_target(screenshot):
     small_mask = cv2.erode(mask, np.ones((2, 1), np.uint8), iterations=1)
     small_mask = cv2.erode(small_mask, np.ones((1, 2), np.uint8), iterations=1)
     small_c = cv2.bitwise_and(c, c, mask=small_mask)
-    binary = cv2.dilate(small_c, np.ones((9, 9), np.uint8), iterations=1)
+    binary = cv2.dilate(small_c, np.ones((7, 7), np.uint8), iterations=2)
 
     # Fill holes:
     # im_floodfill = binary.copy()
@@ -80,26 +79,23 @@ def get_target(screenshot):
 
         # estimate the head from the bounding box:
         head_x = stats[biggest_shape][0]  # int(round(target_x + (target_w / 2.)))
-        head_y = int(round(target_y + (target_h / 5.25)))
+        head_y = int(round(target_y + (target_h / 3.5)))
 
         # walk the head around until you find a shot:
         aim_x = head_x
         aim_y = head_y
-        step_size = 1
-        step_direction = 1
-        while True:
-            if aim_x >= binary.shape[1] or aim_x < 0:
-                aim_x = head_x
-                step_size = 1
-                aim_y += 2
-            if aim_y >= binary.shape[0]:
-                raise Exception("Image Corruption")
-            if binary[aim_y][aim_x] != 0:
+        left = aim_x
+        right = aim_x
+        while left > 0 or right < binary.shape[1]:
+            if left > 0 and binary[aim_y][left] != 0:
+                aim_x = left
+                break
+            elif right < binary.shape[1] and binary[aim_y][right] != 0:
+                aim_x = right
                 break
             else:
-                aim_x += step_size * step_direction
-                step_direction = -step_direction
-                step_size += 1
+                left -= 1
+                right += 1
 
         # try to center the shot on the shape:
         head_left = aim_x
@@ -121,16 +117,11 @@ def get_target(screenshot):
             for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
                 tgt[aim_y + i[0], aim_x + i[1]] = [255, 0, 0]
 
-            cv2.imshow('filter', binary)
+            cv2.imshow('post-canny filter', binary)
             cv2.imshow('lines', c)
+            cv2.imshow('hsv', hsv)
             cv2.imshow('target', tgt)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
         return Target(1., aim_x, aim_y)
-
-def shoot():
-    screenshot = ScreenshotManager.get_screenshot()
-    target = get_target(screenshot)
-    if target.confidence > .5:
-        Robot.click(target.x, target.y)

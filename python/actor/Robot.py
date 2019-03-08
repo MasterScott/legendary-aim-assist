@@ -11,12 +11,12 @@ import numpy as np
 def _smooth_moves(x, y, segments=3):
     x_moves = []
     for i in range(segments - 1):
-        x_moves.append(np.random.uniform(1., (x - np.sum(x_moves))))
+        x_moves.append(np.random.uniform(1., (x - np.sum(x_moves))) + np.random.randint(-5, 5))
     x_moves.append(x - np.sum(x_moves))
 
     y_moves = []
     for i in range(segments - 1):
-        y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))))
+        y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))) + np.random.randint(-5, 5))
     y_moves.append(y - np.sum(y_moves))
 
     return zip(x_moves, y_moves)
@@ -46,13 +46,3 @@ def shoot():
     if not StateManager.shooting:
         keyboard.release(StateManager.shoot_key)
 
-
-def act():
-    if StateManager.aiming and StateManager.shooting:
-        if StateManager.spray_mode or not StateManager.shot:
-            if StateManager.beast_mode() or (StateManager.scope in [ReferenceManager.Scope.x1t]):
-                target = Engine.get_target(StateManager.current_view)
-                if target.confidence > .5:
-                    move(target.x, target.y)
-        shoot()
-        StateManager.shot = True
