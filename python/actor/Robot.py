@@ -24,15 +24,12 @@ def _smooth_moves(x, y, segments=3):
 def move(x, y):
 
     # Adjust for aim point
-    # x -= ReferenceManager.get_aim(StateManager.scope)[0]
-    # y -= ReferenceManager.get_aim(StateManager.scope)[1]
+    x -= ReferenceManager.get_aim(StateManager.scope)[0]
+    y -= ReferenceManager.get_aim(StateManager.scope)[1]
 
     # Adjust for sensitivity
     x /= StateManager.x_sensitivity
     y /= StateManager.y_sensitivity
-
-    print(x, y)
-
 
     # Move the mouse:
     for move in _smooth_moves(x, y, 3):

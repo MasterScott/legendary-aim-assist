@@ -6,12 +6,14 @@ from actor import StateManager
 
 
 def scope_string(scope):
-    return scope[len('Scope.'):]
+    return str(scope)[len('Scope.'):]
 
 class Scope(enum.Enum):
-    x1t = 1
-    x1h = 2
+    x1h = 1
+    x1t = 2
     x2 = 3
+    x2v = 4
+    x4v = 5
 
 
 class AreaOfInterest:
@@ -31,8 +33,14 @@ class HsvBounds:
 
 
 def get_aoi(scope):
-    if scope == Scope.x2:
-        return AreaOfInterest(815, 480, 280, 120)
+    if scope == Scope.x1h:
+        return AreaOfInterest(881, 479, 161, 100)
+    if scope == Scope.x1t:
+        return AreaOfInterest(888, 485, 147, 112)
+    elif scope == Scope.x2:
+        return AreaOfInterest(815, 456, 292, 173)
+    elif scope == Scope.x2v or scope == Scope.x4v:
+        return AreaOfInterest(715, 300, 485, 488)
     else:
         raise Exception("Unknown scope!")
 
@@ -48,6 +56,10 @@ def get_hsv(scope):
 def get_aim(scope):
     if scope == Scope.x2:
         return [145, 60]
+    elif scope == Scope.x2v:
+        return [960, -1]
+    elif scope == Scope.x4v:
+        return [960, 539]
     else:
         raise Exception("Unknown scope!")
 

@@ -70,11 +70,24 @@ def _test_methods():
         total_error += error
     return total_error / len(labels)
 
+# # You must manually paint the masking areas black between steps
+# def _prep_mask(step=2, scope=ReferenceManager.Scope.x4v):
+#     scope_string = ReferenceManager.scope_string(scope)
+#     if step == 1:
+#         image = cv2.imread("C:\\Users\\Eric\\Desktop\\" + scope_string + ".png")
+#         aoi = ReferenceManager.get_aoi(scope)
+#         image = image[aoi.y:(aoi.y + aoi.h), aoi.x:(aoi.x + aoi.w)]
+#         cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", image)
+#     elif step == 2:
+#         image = cv2.imread("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png")
+#         grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+#         _, binary = cv2.threshold(grey, 1, 255, cv2.THRESH_BINARY)
+#         cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", binary)
 
 def main():
 
-    # # Test the performance on labelled data:
-    # #print(_test_methods())  # currently ~22% miss rate
+    # Test the performance on labelled data:
+    print(_test_methods())  # currently ~25% miss rate
     # #return
     #
     # # start the screenshotting thread (for data collection:
@@ -90,10 +103,8 @@ def main():
     #
     # # Invoke this for debug purposes
     # target = Engine.get_target(Screenshot(get_image(), time.time()))
-    #
-    # # Normally, this would be invoked by the Engine itself
-    time.sleep(3)
-    Robot.move(-71, -92)
+
+    # Normally, this would be invoked by the Engine itself
     # Robot.move(target.x, target.y)
 
     print("Running...")
