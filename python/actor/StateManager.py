@@ -32,6 +32,7 @@ x4v_key = "'l'"
 
 # Debug
 debug = False
+screenshot_path = "out/"
 
 # Helper functions:
 def toggle_beast():

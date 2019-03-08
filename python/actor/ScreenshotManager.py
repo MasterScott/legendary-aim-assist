@@ -13,7 +13,7 @@ def update_view(save=False):
         timestamp = int(round(time.time() * 1000))
         screenshot = Screenshot(image, timestamp)
         if save:
-            image.save("out/" + str(timestamp) + ".png")
+            image.save(StateManager.screenshot_path + str(timestamp) + ".png")
         StateManager.update_view(screenshot)
 
 # Private method used to efficiently take screenshots

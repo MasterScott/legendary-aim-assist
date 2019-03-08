@@ -56,19 +56,21 @@ def _test_methods():
 def main():
 
     # Test the performance on labelled data:
-    print(_test_methods())  # currently ~25% miss rate
+    # print(_test_methods())  # currently ~25% miss rate
     # #return
-    #
+
     # # start the screenshotting thread (for data collection:
-    # screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
-    # screenshot_thread.start()
+    # StateManager.aiming = True
+    StateManager.scope = ReferenceManager.Scope.x1h
+    screenshot_thread = BackgroundManager(float(10. / 1000), ScreenshotManager.update_view, [True])
+    screenshot_thread.start()
     #
     # # Start the aiming thread:
     # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
     # aim_thread.start()
     #
     # # start the hook thread:
-    # threading.Thread(target=InputManager.listen).start()
+    threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
     # target = Engine.get_target(Screenshot(get_image(), time.time()))
