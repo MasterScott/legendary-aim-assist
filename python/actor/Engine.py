@@ -31,6 +31,7 @@ def get_target(screenshot):
     final_mask = cv2.erode(mask, np.ones((1, 2), np.uint8), iterations=1)
     final_mask = cv2.dilate(final_mask, np.ones((2, 3), np.uint8), iterations=4)
 
+
     # Apply the mask:
     hsv = cv2.bitwise_and(hsv, hsv, mask=final_mask)
 

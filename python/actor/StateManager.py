@@ -17,7 +17,8 @@ previous_view = None
 # User settings:
 shoot_button = pynput.mouse.Button.middle
 shoot_key = pynput.keyboard.Key.delete
-mouse_sensitivity = 1.  # TODO
+x_sensitivity = 12.5
+y_sensitivity = 26
 spray_mode = False
 beast_key = "'z'"
 
@@ -27,7 +28,7 @@ scoping = False
 x1t_key = "'h'"
 x1h_key = "'j"
 x2_key = "'k"
-
+x4v_key = "'l'"
 
 # Debug
 debug = False

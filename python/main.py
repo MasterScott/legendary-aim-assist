@@ -8,7 +8,7 @@ import threading
 from actor.BackgroundManager import BackgroundManager
 from adt.Screenshot import Screenshot
 from actor import Robot, InputManager
-from actor import ScreenshotManager, Engine
+from actor import ScreenshotManager, Engine, StateManager, ReferenceManager
 
 # Function for finding the euclidean distance between two tuples representing points:
 def _distance(a, b):
@@ -16,23 +16,6 @@ def _distance(a, b):
 
 def get_image():
     return cv2.imread('data/samples/x2/1551643714397.png')  # clean sample
-    # return cv2.imread('data/samples/x2data/samples/x2/1551643715076.png')  # occluded
-    # return cv2.imread('data/samples/x2/1551643723461.png')  # very close
-    # return cv2.imread('data/samples/x2/1551644022774.png')  # moderately far
-    # return cv2.imread('data/samples/x2/1551644025498.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644032348.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644036303.png')  # noisy
-    # return cv2.imread('data/samples/x2/1551644037278.png')  # hit marker
-    # return cv2.imread('data/samples/x2/1551643714966.png')  # also occluded
-    # return cv2.imread('data/samples/x2/1551643723862.png')  # smoky
-    # return cv2.imread('data/samples/x2/1551644032232.png')  # trail
-    # return cv2.imread('data/samples/x2/1551644032600.png')  # trail
-    # return cv2.imread('data/samples/x2/1551644033718.png')  # flash
-    # return cv2.imread('data/samples/x2/1551643710602.png')  # crawl
-    # return cv2.imread('data/samples/x2/1551643714726.png')  # occluded
-    # return cv2.imread('data/samples/x2/1551643716105.png')  # mirage # fails, but understandably
-    # return cv2.imread('data/samples/x2/1551643723862.png') # close, flash
-    # return cv2.imread('data/samples/x2/1551643724589.png')  # heavy occlusion
 
 # Used to optimize parameters:
 # def _test_methods_cost(x):
@@ -70,29 +53,28 @@ def _test_methods():
         total_error += error
     return total_error / len(labels)
 
-
 def main():
 
     # Test the performance on labelled data:
-    #print(_test_methods())  # currently ~22% miss rate
-    #return
-
-    # start the screenshotting thread (for data collection:
-    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
-    screenshot_thread.start()
-
-    # Start the aiming thread:
-    aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
-    aim_thread.start()
-
-    # start the hook thread:
-    threading.Thread(target=InputManager.listen).start()
-
-    # Invoke this for debug purposes
-    target = Engine.get_target(Screenshot(get_image(), time.time()))
+    print(_test_methods())  # currently ~25% miss rate
+    # #return
+    #
+    # # start the screenshotting thread (for data collection:
+    # screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
+    # screenshot_thread.start()
+    #
+    # # Start the aiming thread:
+    # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
+    # aim_thread.start()
+    #
+    # # start the hook thread:
+    # threading.Thread(target=InputManager.listen).start()
+    #
+    # # Invoke this for debug purposes
+    # target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself
-    Robot.move(target.x, target.y)
+    # Robot.move(target.x, target.y)
 
     print("Running...")
 
