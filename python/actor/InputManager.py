@@ -20,9 +20,10 @@ def listen():
             StateManager.aiming = pressed
             if not pressed:
                 StateManager.clear_view()
+                StateManager.shot = False
 
         # When shooting or aiming is toggled, update shooting and potentially clear shot:
-        if button == StateManager.shoot_button or button == pynput.mouse.Button.right:
+        if button == StateManager.shoot_button:
             StateManager.shooting = pressed and StateManager.aiming
             if not pressed:
                 StateManager.shot = False
@@ -36,6 +37,7 @@ def listen():
             StateManager.toggle_beast()
         elif StateManager.scoping and str(key) in ReferenceManager.key_dict():
             StateManager.scope = ReferenceManager.key_dict()[str(key)]
+            StateManager.clear_view()
             print("Scope = " + str(StateManager.scope))
 
     def on_release(key):

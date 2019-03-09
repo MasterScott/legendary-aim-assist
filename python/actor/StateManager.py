@@ -14,7 +14,7 @@ previous_view = None
 
 # User settings:
 shoot_button = pynput.mouse.Button.middle
-shoot_key = pynput.keyboard.Key.delete
+shoot_key = 0x2E
 x_sensitivity = 12.5
 y_sensitivity = 26
 spray_mode = False

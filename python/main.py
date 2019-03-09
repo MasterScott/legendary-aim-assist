@@ -15,14 +15,8 @@ def _distance(a, b):
     return math.sqrt(((a[0] - b[0]) ** 2) + ((a[1] - b[1]) ** 2))
 
 def get_image():
-    return cv2.imread('data/samples/x2/1552079474806.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
-    # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
+    # return cv2.imread('data/samples/x4v/1552082540465.png')  # mask causing miss
+    return cv2.imread('data/samples/x4v/1552082541237.png')  # mask causing miss
     # return cv2.imread('data/samples/x2/1552079474863.png')  # spray causing miss
 
 # Used to optimize parameters:
@@ -32,7 +26,7 @@ def get_image():
 #     return _test_methods()
 
 
-def _test_methods(scope=ReferenceManager.Scope.x1h):
+def _test_methods(scope=ReferenceManager.Scope.x2):
     StateManager.debug = False
     StateManager.scope = scope
     labels = tuple(open('data/labels/' + ReferenceManager.scope_string(scope) + '/labels.txt', 'r'))
@@ -75,25 +69,26 @@ def main():
     # Test the performance on labelled data:
     # Currently:
     #  x1h: 0.045454545454545456
-    #  x2:  0.05238095238095238
-    print(_test_methods())
+    #  x2:  0.06190476190476191
+    #  x4v:  0.125 (not enough data)
+    # print(_test_methods())
     # #return
 
     # # start the screenshotting thread (for data collection:
-    StateManager.scope = ReferenceManager.Scope.x1t
-    screenshot_thread = BackgroundManager(float(20. / 1000), ScreenshotManager.update_view, [True])
+    StateManager.scope = ReferenceManager.Scope.x1h
+    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
     screenshot_thread.start()
     #
     # # Start the aiming thread:
-    # aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
-    # aim_thread.start()
+    aim_thread = BackgroundManager(float(1. / 1000), Robot.act, [])
+    aim_thread.start()
     #
-    # # start the hook thread:
+    # start the hook thread:
     threading.Thread(target=InputManager.listen).start()
     #
     # # Invoke this for debug purposes
     # StateManager.debug = True
-    # StateManager.scope = ReferenceManager.Scope.x2
+    # StateManager.scope = ReferenceManager.Scope.x4v
     # target = Engine.get_target(Screenshot(get_image(), time.time()))
 
     # Normally, this would be invoked by the Engine itself

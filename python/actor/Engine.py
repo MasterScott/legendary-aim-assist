@@ -13,10 +13,7 @@ def _convert_binary(image):
 
 def get_target(screenshot):
 
-    # This should be managed through StateManager & InputManager:
     scope = StateManager.scope
-
-    # This should be managed through StateManager, InputManager, and ScreenShotManager
     raw = screenshot.image
 
     # Filter the image with the right mask:
@@ -24,6 +21,7 @@ def get_target(screenshot):
     raw = cv2.bitwise_and(raw, raw, mask=relevant_mask)
 
     # Convert to HSV:
+    # print(screenshot)
     hsv = cv2.cvtColor(raw, cv2.COLOR_BGR2HSV)
 
     # Build a mask based on HSV filtering:
@@ -67,7 +65,7 @@ def get_target(screenshot):
     stats = [i for j, i in enumerate(stats) if j not in invalid_label_indices]
 
     if len(stats) <= 0:
-        return Target(-1)
+        return Target(1, 100, 100)# TODO should be Target(-1)
     else:
         biggest_shape = np.argmax(list(map(lambda s: s[4], stats)))
 
@@ -78,8 +76,8 @@ def get_target(screenshot):
         target_h = stats[biggest_shape][cv2.CC_STAT_HEIGHT]
 
         # estimate the head from the bounding box:
-        head_x = stats[biggest_shape][0]  # int(round(target_x + (target_w / 2.)))
-        head_y = int(round(target_y + (target_h / 3.5)))
+        head_x = int(round((stats[biggest_shape][0] + int(round(target_x + (target_w / 2.)))) / 2.))
+        head_y = int(round(target_y + (target_h / 4.)))
 
         # walk the head around until you find a shot:
         aim_x = head_x
