@@ -12,15 +12,16 @@ import time
 def _smooth_moves(x, y, segments=3):
     x_moves = []
     for i in range(segments - 1):
-        x_moves.append(np.random.uniform(1., (x - np.sum(x_moves))) + np.random.uniform(-(x/10.), (x/10.)))
+        x_moves.append(np.random.randint(1., (x - np.sum(x_moves))) + np.random.randint(-int(x/10), int(x/10)))
     x_moves.append(x - np.sum(x_moves))
 
     y_moves = []
     for i in range(segments - 1):
-        y_moves.append(np.random.uniform(1., (y - np.sum(y_moves))) + np.random.uniform(-(y / 10.), (y / 10.)))
+        y_moves.append(np.random.randint(1, (y - np.sum(y_moves))) + np.random.randint(-int(y/10), int(y/10)))
     y_moves.append(y - np.sum(y_moves))
 
     return zip(x_moves, y_moves)
+
 
 def move(x, y):
 
@@ -32,12 +33,14 @@ def move(x, y):
     x /= StateManager.x_sensitivity
     y /= StateManager.y_sensitivity
 
+    # Adjust for windows API:
+    x = int(round(x * 65535 / win32api.GetSystemMetrics(0)))
+    y = int(round(y * 65535 / win32api.GetSystemMetrics(1)))
+
     # Move the mouse:
     for smooth_move in _smooth_moves(x, y, 3):
-        # print(x, smooth_move, int(smooth_move[0] * 65535 / win32api.GetSystemMetrics(0)))
-        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE,
-                             int(smooth_move[0] * 65535 / win32api.GetSystemMetrics(0)),
-                             int(smooth_move[1] * 65535 / win32api.GetSystemMetrics(1)))
+        # print(x, smooth_move, smooth_move[0])
+        win32api.mouse_event(win32con.MOUSEEVENTF_MOVE, smooth_move[0], smooth_move[1])
         # time.sleep(np.random.uniform(.001, .003))
 
 
