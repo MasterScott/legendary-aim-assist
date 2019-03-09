@@ -3,3 +3,4 @@ class Target:
         self.x = x
         self.y = y
         self.confidence = confidence
+        self.centroid = centroid

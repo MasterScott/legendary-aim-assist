@@ -92,7 +92,7 @@ def main():
     # #return
 
     # start the screenshotting thread (for data collection:
-    StateManager.scope = ReferenceManager.Scope.x1h
+    StateManager.scope = ReferenceManager.Scope.x2
     screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [False])
     screenshot_thread.start()
     #

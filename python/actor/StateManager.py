@@ -31,7 +31,7 @@ x2_key = "'l'"
 x4v_key = "';'"
 
 # Debug
-debug = False
+debug = True
 screenshot_path = "out/"
 start_time = -1
 

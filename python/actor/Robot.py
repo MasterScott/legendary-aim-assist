@@ -56,17 +56,29 @@ def act():
     if StateManager.aiming and StateManager.shooting:
         if StateManager.spray_mode or not StateManager.shot:
             if StateManager.beast_mode() or (StateManager.scope in [ReferenceManager.Scope.x1t]):
-                while not StateManager.current_view or not StateManager.previous_view:
-                    time.sleep(.001)
+
+                # Sleep until we have a current view
+                while not StateManager.current_view:
+                    time.sleep(.0001)
+
+                # Analyze the current view
+                past_time = StateManager.current_view.timestamp
+                past_target = Engine.get_target(StateManager.current_view)
+
+                # Sleep until a new view comes in (we've been treating the old current view as the past view)
+                while StateManager.current_view.timestamp <= past_time:
+                    time.sleep(.0001)
+                current_time = StateManager.current_view.timestamp
                 current_target = Engine.get_target(StateManager.current_view)
-                past_target = Engine.get_target(StateManager.previous_view)
+
+                # If we're confident in both views, extrapolate the future state based on the target delta
                 x, y = current_target.x, current_target.y
                 if current_target.confidence > .5:
                     if past_target.confidence > .5:
-                        x_delta = current_target.centroid.x - past_target.centroid.x
-                        y_delta = current_target.centroid.y - past_target.centroid.y
-                        current_time = time.time() * 1000
-                        time_ratio = max(1., ((current_time - StateManager.current_view.timestamp) / (StateManager.current_view.timestamp - StateManager.previous_view.timestamp))) * .5
+                        x_delta = current_target.centroid[0] - past_target.centroid[0]
+                        y_delta = current_target.centroid[1] - past_target.centroid[1]
+                        now = time.time() * 1000
+                        time_ratio = max(1., ((now - current_time) / (current_time - past_time))) * .5
                         x_delta_pred, y_delta_pred = x_delta * time_ratio, y_delta * time_ratio
                         x, y = x + x_delta_pred, y + y_delta_pred
                     move(x, y)
