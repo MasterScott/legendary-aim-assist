@@ -25,6 +25,8 @@ def listen():
         # When shooting or aiming is toggled, update shooting and potentially clear shot:
         if button == StateManager.shoot_button:
             StateManager.shooting = pressed and StateManager.aiming
+            if StateManager.shooting:
+                StateManager.start_time = time.time()
             if not pressed:
                 StateManager.shot = False
 
@@ -35,6 +37,7 @@ def listen():
             StateManager.scoping = True
         elif str(key) == StateManager.beast_key:
             StateManager.toggle_beast()
+            print("Beast mode = " + str(StateManager.beast_mode()))
         elif StateManager.scoping and str(key) in ReferenceManager.key_dict():
             StateManager.scope = ReferenceManager.key_dict()[str(key)]
             StateManager.clear_view()

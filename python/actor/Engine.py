@@ -55,6 +55,7 @@ def get_target(screenshot):
     labels = components[1] + 1
     labels = cv2.bitwise_and(labels, labels, mask=final_mask)
     stats = components[2]
+    centroids = components[3]
 
     # find the biggest non-background shape label:
     counts = np.unique(labels, return_counts=True)
@@ -63,9 +64,12 @@ def get_target(screenshot):
         if label == 0:
             invalid_label_indices.append(i)
     stats = [i for j, i in enumerate(stats) if j not in invalid_label_indices]
+    centroids = [i for j, i in enumerate(centroids) if j not in invalid_label_indices]
 
     if len(stats) <= 0:
-        return Target(1, 100, 100)# TODO should be Target(-1)
+        print("No valid target found!")
+        cv2.imwrite('out/fail-' + str(int(round(time.time() * 1000))) + '.png', raw)
+        return Target(-1)
     else:
         biggest_shape = np.argmax(list(map(lambda s: s[4], stats)))
 
@@ -122,4 +126,4 @@ def get_target(screenshot):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
-        return Target(1., aim_x, aim_y)
+        return Target(1., aim_x, aim_y, centroids[biggest_shape])

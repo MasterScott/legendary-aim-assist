@@ -14,6 +14,7 @@ class Scope(enum.Enum):
     x2 = 3
     x2v = 4
     x4v = 5
+    x1o = 6
 
 
 class AreaOfInterest:
@@ -41,12 +42,14 @@ def get_aoi(scope):
         return AreaOfInterest(815, 456, 292, 173)
     elif scope == Scope.x2v or scope == Scope.x4v:
         return AreaOfInterest(715, 300, 485, 488)
+    elif scope == Scope.x1o:
+        return AreaOfInterest(817, 392, 290, 240)
     else:
         raise Exception("Unknown scope!")
 
 
 def get_hsv(scope):
-    if scope in key_dict().values() and scope not in [Scope.x1t]: # TODO determine the colors for the x1t scope
+    if scope in key_dict().values() and scope not in [Scope.x1t]:  # TODO determine the colors for the x1t scope
         return HsvBounds(np.array([1, 50, 60]), np.array([10, 180, 190]))
     else:
         raise Exception("Unknown scope!")
@@ -74,6 +77,7 @@ def key_dict():
         StateManager.x2_key:  Scope.x2,
         StateManager.x1h_key: Scope.x1h,
         StateManager.x1t_key: Scope.x1t,
-        StateManager.x4v_key: Scope.x4v
+        StateManager.x4v_key: Scope.x4v,
+        StateManager.x1o_key: Scope.x1o
     }
 

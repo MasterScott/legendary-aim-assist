@@ -64,7 +64,24 @@ def _test_methods(scope=ReferenceManager.Scope.x2):
         # cv2.destroyAllWindows()
     return total_error / len(labels)
 
+# You must manually paint the masking areas black between steps
+def _prep_mask(step=2, scope=ReferenceManager.Scope.x1o):
+    scope_string = ReferenceManager.scope_string(scope)
+    print(scope_string)
+    if step == 1:
+        image = cv2.imread("C:\\Users\\Eric\\Desktop\\" + scope_string + ".png")
+        aoi = ReferenceManager.get_aoi(scope)
+        image = image[aoi.y:(aoi.y + aoi.h), aoi.x:(aoi.x + aoi.w)]
+        cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", image)
+    elif step == 2:
+        image = cv2.imread("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png")
+        grey = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        _, binary = cv2.threshold(grey, 1, 255, cv2.THRESH_BINARY)
+        cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", binary)
+
+
 def main():
+
 
     # Test the performance on labelled data:
     # Currently:
@@ -74,9 +91,9 @@ def main():
     # print(_test_methods())
     # #return
 
-    # # start the screenshotting thread (for data collection:
+    # start the screenshotting thread (for data collection:
     StateManager.scope = ReferenceManager.Scope.x1h
-    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [])
+    screenshot_thread = BackgroundManager(float(1. / 1000), ScreenshotManager.update_view, [False])
     screenshot_thread.start()
     #
     # # Start the aiming thread:
@@ -85,14 +102,6 @@ def main():
     #
     # start the hook thread:
     threading.Thread(target=InputManager.listen).start()
-    #
-    # # Invoke this for debug purposes
-    # StateManager.debug = True
-    # StateManager.scope = ReferenceManager.Scope.x4v
-    # target = Engine.get_target(Screenshot(get_image(), time.time()))
-
-    # Normally, this would be invoked by the Engine itself
-    # Robot.move(target.x, target.y)
 
     print("Running...")
 

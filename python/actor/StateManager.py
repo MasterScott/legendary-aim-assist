@@ -24,14 +24,16 @@ scope = None
 # Scope settings:
 scope_key = pynput.keyboard.Key.ctrl_l
 scoping = False
-x1t_key = "'h'"
+x1o_key = "'h'"
 x1h_key = "'j'"
-x2_key = "'k'"
-x4v_key = "'l'"
+x1t_key = "'k'"
+x2_key = "'l'"
+x4v_key = "';'"
 
 # Debug
 debug = False
 screenshot_path = "out/"
+start_time = -1
 
 # Helper functions:
 def toggle_beast():
@@ -40,7 +42,7 @@ def toggle_beast():
         _beast_time = time.time()
     else:
         _beast_time = -1
-    print("Beast Mode = " + str(beast_mode()))
+    #print("Beast Mode = " + str(beast_mode()))
 
 
 def beast_mode():

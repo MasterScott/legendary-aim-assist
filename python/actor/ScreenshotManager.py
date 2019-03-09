@@ -5,6 +5,7 @@ import time
 from actor import StateManager, ReferenceManager
 from adt.Screenshot import Screenshot
 import numpy as np
+import cv2
 
 # Updates the statemanager view, and optionally saves it as an image
 # Typically takes <10 ms, or <30ms if saving.
@@ -12,7 +13,11 @@ def update_view(save=False):
     if StateManager.aiming and StateManager.beast_mode():
         image = _gsk_screenshot(ReferenceManager.get_aoi(StateManager.scope))
         timestamp = int(round(time.time() * 1000))
-        screenshot = Screenshot(np.array(image), timestamp)
+        screenshot = Screenshot(cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB), timestamp)
+        # screenshot = Screenshot(cv2.imread('data/samples/x1h/1552066529854.png'), timestamp)
+        # cv2.imshow('t', screenshot.image)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         if save:
             image.save(StateManager.screenshot_path + str(timestamp) + ".png")
         StateManager.update_view(screenshot)

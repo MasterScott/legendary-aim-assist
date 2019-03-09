@@ -33,18 +33,22 @@ def move(x, y):
     y /= StateManager.y_sensitivity
 
     # Move the mouse:
-    for move in _smooth_moves(x, y, 3):
+    for smooth_move in _smooth_moves(x, y, 3):
+        # print(x, smooth_move, int(smooth_move[0] * 65535 / win32api.GetSystemMetrics(0)))
         win32api.mouse_event(win32con.MOUSEEVENTF_MOVE,
-                             int(move[0] * 65535 / win32api.GetSystemMetrics(0)), int(move[1] * 65535 / win32api.GetSystemMetrics(1)))
-        time.sleep(np.random.uniform(.001, .005))
+                             int(smooth_move[0] * 65535 / win32api.GetSystemMetrics(0)),
+                             int(smooth_move[1] * 65535 / win32api.GetSystemMetrics(1)))
+        # time.sleep(np.random.uniform(.001, .003))
 
 
 def shoot():
     x, y = win32api.GetCursorPos()
     if StateManager.shooting:
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, x, y, 0, 0)
-        time.sleep(np.random.uniform(.004, .006))
+        # print(time.time() - StateManager.start_time)  # TODO remove debug
+        time.sleep(np.random.uniform(.001, .003))
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, x, y, 0, 0)
+
 
 
 
@@ -52,10 +56,19 @@ def act():
     if StateManager.aiming and StateManager.shooting:
         if StateManager.spray_mode or not StateManager.shot:
             if StateManager.beast_mode() or (StateManager.scope in [ReferenceManager.Scope.x1t]):
-                while not StateManager.current_view:
+                while not StateManager.current_view or not StateManager.previous_view:
                     time.sleep(.001)
-                target = Engine.get_target(StateManager.current_view)
-                if target.confidence > .5:
-                    move(target.x, target.y)
+                current_target = Engine.get_target(StateManager.current_view)
+                past_target = Engine.get_target(StateManager.previous_view)
+                x, y = current_target.x, current_target.y
+                if current_target.confidence > .5:
+                    if past_target.confidence > .5:
+                        x_delta = current_target.centroid.x - past_target.centroid.x
+                        y_delta = current_target.centroid.y - past_target.centroid.y
+                        current_time = time.time() * 1000
+                        time_ratio = max(1., ((current_time - StateManager.current_view.timestamp) / (StateManager.current_view.timestamp - StateManager.previous_view.timestamp))) * .5
+                        x_delta_pred, y_delta_pred = x_delta * time_ratio, y_delta * time_ratio
+                        x, y = x + x_delta_pred, y + y_delta_pred
+                    move(x, y)
                     shoot()
                 StateManager.shot = True
