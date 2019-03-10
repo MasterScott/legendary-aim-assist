@@ -19,7 +19,7 @@ def click_and_crop(event, x, y, flags, param):
 def main():
     global refPt, cropping
 
-    StateManager.scope = ReferenceManager.Scope.x4v
+    StateManager.scope = ReferenceManager.Scope.x1t
     image_path = 'data/samples/' + ReferenceManager.scope_string(StateManager.scope) + '/'
     label_path = 'data/labels/' + ReferenceManager.scope_string(StateManager.scope) + '/labels.txt'
 
@@ -34,7 +34,7 @@ def main():
         image = cv2.imread(image_path + image_name)
         target = Engine.get_target(Screenshot(image, time.time()))
         for i in [(0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)]:
-            image[target.y + i[0], target.y + i[1]] = [0, 255, 0]
+            image[target.y + i[0], target.x + i[1]] = [0, 255, 0]
         clone = image.copy()
         cv2.namedWindow("image")
         cv2.setMouseCallback("image", click_and_crop)

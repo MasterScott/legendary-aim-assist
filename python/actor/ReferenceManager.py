@@ -52,7 +52,8 @@ def get_hsv(scope):
     if scope in key_dict().values() and scope not in [Scope.x1t]:  # TODO determine the colors for the x1t scope
         return HsvBounds(np.array([1, 50, 60]), np.array([10, 180, 190]))
     else:
-        raise Exception("Unknown scope!")
+        return HsvBounds(np.array([1, 50, 60]), np.array([10, 180, 190]))
+        # raise Exception("Unknown scope!")
 
 
 def get_aim(scope):

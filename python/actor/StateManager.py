@@ -15,8 +15,8 @@ previous_view = None
 # User settings:
 shoot_button = pynput.mouse.Button.middle
 shoot_key = 0x2E
-x_sensitivity = 12.5
-y_sensitivity = 26
+x_sensitivity = 13
+y_sensitivity = 23.5
 spray_mode = False
 beast_key = "'z'"
 scope = None
@@ -31,7 +31,7 @@ x2_key = "'l'"
 x4v_key = "';'"
 
 # Debug
-debug = True
+debug = False
 screenshot_path = "out/"
 start_time = -1
 

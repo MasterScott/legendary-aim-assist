@@ -1,4 +1,5 @@
 import cv2
+import os
 import numpy as np
 import time
 import math
@@ -79,16 +80,18 @@ def _prep_mask(step=2, scope=ReferenceManager.Scope.x1o):
         _, binary = cv2.threshold(grey, 1, 255, cv2.THRESH_BINARY)
         cv2.imwrite("C:\\Users\\Eric\\Desktop\\code\\legendary-aim-assist\\python\\data\\masks\\" + scope_string + "\\mask.png", binary)
 
-
 def main():
 
+    print("Running tests...")
+    for scope in (ReferenceManager.Scope.x1h, ReferenceManager.Scope.x2, ReferenceManager.Scope.x4v, ReferenceManager.Scope.x1t):
+        print("\t\t", ReferenceManager.scope_string(scope), "=", _test_methods(scope))
 
     # Test the performance on labelled data:
     # Currently:
     #  x1h: 0.045454545454545456
     #  x2:  0.06190476190476191
-    #  x4v:  0.125 (not enough data)
-    # print(_test_methods())
+    #  x4v: 0.125 (not enough data)
+    #  x1t: 0.061224489795918366
     # #return
 
     # start the screenshotting thread (for data collection:

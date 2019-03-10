@@ -19,7 +19,7 @@ def update_view(save=False):
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
         if save:
-            image.save(StateManager.screenshot_path + str(timestamp) + ".png")
+            cv2.imwrite(StateManager.screenshot_path + str(timestamp) + ".png", screenshot.image)
         StateManager.update_view(screenshot)
 
 # Private method used to efficiently take screenshots
