@@ -16,5 +16,3 @@ That said, all buttons are documented in `actor/StateManager.py`, and the basics
 * The aim assist will kick in if you're using a scope that highlights enemies, or have pressed 'Z' recently. If you're not playing a character where 'Z' highlights enemies, change `actor.StateManager.beast_key` to something else. Any time you activate "beast mode" with 'Z', you can hit 'Z' again to deactivate it. 
 * `actor.StateManager.spray_mode` controls whether or not aim assit continues working while you hold down the `actor.StateManager.shoot_key` button.
 
-### Gen 2
-In the future (referred to as "gen 2" in comments) efforts will be made to generalize this functionality to all in-game situations. The focus on red targeting for now allows for the project scaffolding to be built around an MVP and offers an opportunity to generate training data for future iterations.
